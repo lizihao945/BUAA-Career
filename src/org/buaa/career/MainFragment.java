@@ -3,13 +3,18 @@ package org.buaa.career;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.buaa.career.note.ArticleFragment;
 import org.buaa.career.note.HeadlineFragment;
+import org.buaa.career.note.HeadlineFragment.OnHeadlineSelectedListener;
+import org.buaa.career.trifle.Article;
+import org.buaa.career.trifle.DownloadHeadlineTask;
 import org.buaa.career.trifle.Headline;
 import org.buaa.career.trifle.NewsUnit;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +28,6 @@ import android.view.ViewGroup;
 public class MainFragment extends Fragment {
 	private static List<Fragment> mTabFragments;
 	private int mPosition;
-	private MainPagerAdapter mPagerAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,22 +40,13 @@ public class MainFragment extends Fragment {
 		fragment.setArguments(args);
 		mTabFragments.add(fragment);
 
-		args = new Bundle();
-		args.putInt("position", 2);
-		fragment = new HeadlineFragment();
-		fragment.setArguments(args);
-		mTabFragments.add(fragment);
-
-		mPagerAdapter = new MainPagerAdapter(getActivity().getSupportFragmentManager(),
-				mTabFragments);
-
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_highest, container, false);
-		ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
-		viewPager.setAdapter(mPagerAdapter);
+		getChildFragmentManager().beginTransaction().add(R.id.tab_container, mTabFragments.get(0))
+				.commit();
 		return view;
 	}
 
@@ -62,16 +57,22 @@ public class MainFragment extends Fragment {
 	}
 
 	/**
-	 * As the manager of tab fragments, MainFragment provides the method
-	 * in order that AsyncTask can do callback to invoke on HeadlineFragment.
-	 * @param newsUnits
+	 * As the manager of tab fragments, MainFragment provides the method in order that AsyncTask can
+	 * do callback to invoke on HeadlineFragment.
+	 * 
+	 * @param headlines
 	 */
-	public void onPostDataLoding(List<NewsUnit> newsUnits) {
-		ArrayList<Headline> headlines = new ArrayList<Headline>();
-		for (NewsUnit newsUnit : newsUnits)
-			headlines.add(newsUnit.headline);
+	public void onPostDataLoding(List<Headline> headlines) {
+		Log.v("LOAD_DATA", "loaded from web");
+		((HeadlineFragment) mTabFragments.get(0)).setDataSource(headlines);
+	}
 
-		((HeadlineFragment)mTabFragments.get(0)).setDataSource(headlines);
+	public void onPostDataLoding(Article result) {
 
 	}
+
+	public List<Fragment> getTabFragments() {
+		return mTabFragments;
+	}
+
 }

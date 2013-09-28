@@ -1,10 +1,10 @@
 package org.buaa.career.note;
 
+import org.buaa.career.MainActivity;
 import org.buaa.career.R;
 import org.buaa.career.trifle.Article;
-import org.buaa.career.trifle.NewsUnit;
+import org.buaa.career.trifle.Headline;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,20 +13,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class ArticleFragment extends Fragment {
-	private int currPosition;
-	private AsyncTask<Object, Integer, Article> mAsyncTask = null;
-	private NewsUnit mNewsUnit;
+	private int mPosition;
+	private Headline mHeadline;
+	private Article mArticle;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		try {
-			mNewsUnit = savedInstanceState.getParcelable("news_unit");
-		} catch (NullPointerException e) {
-			System.err.println("!\"!@!#!!3");
-		}
-
+		mPosition = getArguments().getInt("position");
+		mHeadline = ((HeadlineFragment) ((MainActivity) getActivity()).getMainFragment()
+				.getTabFragments().get(0)).getHeadlines().get(mPosition);
+		
 	}
 
 	@Override
@@ -34,12 +31,8 @@ public class ArticleFragment extends Fragment {
 		super.onStart();
 		// System.out.println("onCreateView() called for ArticleFragment" + currPosition);
 		View view = inflater.inflate(R.layout.fragment_one_article, container, false);
-		Bundle args;
-		if ((args = getArguments()) != null) {
-			currPosition = args.getInt("position");
-		}
 		TextView textView = (TextView) view.findViewById(R.id.text_view);
-		textView.setText(mNewsUnit.getTitle());
+		textView.setText(mHeadline.title);
 		return view;
 	}
 
@@ -48,15 +41,6 @@ public class ArticleFragment extends Fragment {
 		super.onSaveInstanceState(outState);
 		// Save the current article selection in case we need to recreate the
 		// fragment
-		outState.putInt("position", currPosition);
-		outState.putString("headline", mNewsUnit.getTitle());
+		outState.putInt("position", mPosition);
 	}
-
-	@Override
-	public void onDestroy() {
-		if (mAsyncTask != null)
-			mAsyncTask.cancel(true);
-		super.onDestroy();
-	}
-
 }

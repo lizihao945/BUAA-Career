@@ -3,30 +3,34 @@ package org.buaa.career.trifle;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import org.buaa.career.MainActivity;
+
+import org.buaa.career.MainFragment;
+import org.buaa.career.note.HeadlineFragment;
+import org.buaa.career.note.HeadlineFragment.OnHeadlineSelectedListener;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.AndFilter;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.filters.HasParentFilter;
 import org.htmlparser.filters.TagNameFilter;
+import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeIterator;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
 import android.os.AsyncTask;
 
-public class DownloadNewsUnitTask extends AsyncTask<Void, Integer, ArrayList<NewsUnit>> {
+public class DownloadHeadlineTask extends AsyncTask<Void, Integer, ArrayList<Headline>> {
 	private static final String URL_STRING = "http://career.buaa.edu.cn/website/zphxx.h";
 	private static final String ENCODE = "GB2312";
-	private MainActivity mActivity;
+	private MainFragment mMainFragment;
 
-	public DownloadNewsUnitTask(MainActivity activity) {
-		mActivity = activity;
+	public DownloadHeadlineTask(MainFragment fragment) {
+		mMainFragment = fragment;
 	}
 
 	@Override
-	protected ArrayList<NewsUnit> doInBackground(Void... args) {
+	protected ArrayList<Headline> doInBackground(Void... args) {
 		Parser parser = new Parser();
 
 		try {
@@ -56,12 +60,12 @@ public class DownloadNewsUnitTask extends AsyncTask<Void, Integer, ArrayList<New
 				e.nextNode().collectInto(aNodes, new TagNameFilter("a"));
 			}
 			// get the text out and analyze
-			ArrayList<NewsUnit> tmp = new ArrayList<NewsUnit>();
+			ArrayList<Headline> tmp = new ArrayList<Headline>();
 			for (NodeIterator e = aNodes.elements(); e.hasMoreNodes();) {
-				Headline headline = new Headline((e.nextNode().toPlainTextString().trim()),
-						Headline.ZHUAN_CHANG);
-				tmp.add(new NewsUnit(headline));
-				System.out.println(tmp.get(tmp.size() - 1).getTitle());
+				LinkTag node = (LinkTag) e.nextNode();
+				Headline headline = new Headline((node.toPlainTextString().trim()),
+						Headline.ZHUAN_CHANG, node.getLink());
+				tmp.add(headline);
 			}
 			return tmp;
 		} catch (ParserException e1) {
@@ -76,9 +80,9 @@ public class DownloadNewsUnitTask extends AsyncTask<Void, Integer, ArrayList<New
 	}
 
 	@Override
-	protected void onPostExecute(ArrayList<NewsUnit> result) {
+	protected void onPostExecute(ArrayList<Headline> result) {
 		if (result != null)
-			mActivity.getMainFragment().onPostDataLoding(result);
+			mMainFragment.onPostDataLoding(result);
 		super.onPostExecute(result);
 	}
 

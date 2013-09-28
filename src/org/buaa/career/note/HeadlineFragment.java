@@ -6,17 +6,26 @@ import java.util.List;
 import java.util.Map;
 
 import org.buaa.career.MainActivity;
+import org.buaa.career.MainFragment;
 import org.buaa.career.R;
+import org.buaa.career.trifle.DownloadHeadlineTask;
 import org.buaa.career.trifle.Headline;
+import org.buaa.career.trifle.NewsListView;
+import org.buaa.career.trifle.NewsListView.OnRefreshListener;
 import org.buaa.career.trifle.NewsUnit;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.SimpleAdapter;
 
 /**
@@ -25,41 +34,59 @@ import android.widget.SimpleAdapter;
  * @author James
  * 
  */
-public class HeadlineFragment extends ListFragment {
+public class HeadlineFragment extends Fragment {
 	private OnHeadlineSelectedListener mCallBack;
-	private List<Headline> mHeadlines = null;
-	private int mNum;
+	private List<Headline> mHeadlines;
+	private NewsListView mListView;
 
 	public interface OnHeadlineSelectedListener {
-		public void onArticleSelected(int position);
+		public void onHeadlineSelected(int position);
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mNum = getArguments() != null ? getArguments().getInt("position") : -1;
-		// get Headline from NewsUnit
-		List<NewsUnit> newsUnits = ((MainActivity) getActivity()).getNewsUnits().subList(0, 19);
-		mHeadlines = new ArrayList<Headline>(20);
-		for (NewsUnit newsUnit : newsUnits)
-			mHeadlines.add(newsUnit.headline);
 
-		setDataSource(mHeadlines);
+		mHeadlines = new ArrayList<Headline>();
+		for (int i = 0; i < 20; i++)
+			mHeadlines.add(new Headline());
+
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_one, container, false);
+		mListView = (NewsListView) view.findViewById(R.id.refreshable_list);
 		return view;
 	}
 
 	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		mCallBack = (OnHeadlineSelectedListener) getActivity();
-		// Notify the parent activity of selected item
-		mCallBack.onArticleSelected(position);
-		// Set the item as checked to be highlighted when in two-pane layout
-		getListView().setItemChecked(position, true);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+	}
+
+	@Override
+	public void onStart() {
+		setDataSource(mHeadlines);
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				mCallBack = (OnHeadlineSelectedListener) (MainActivity) getActivity();
+				// Notify the parent activity of selected item
+				mCallBack.onHeadlineSelected(position);
+				// Set the item as checked to be highlighted when in two-pane layout
+				mListView.setItemChecked(position, true);
+
+			}
+		});
+		mListView.setOnRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				new DownloadHeadlineTask((MainFragment) getParentFragment()).execute();
+			}
+		});
+		super.onStart();
 	}
 
 	public void setDataSource(List<Headline> headlines) {
@@ -70,7 +97,8 @@ public class HeadlineFragment extends ListFragment {
 			tmpMap.put("title", headlines.get(i).title);
 			tmp.add(tmpMap);
 		}
-		setListAdapter(new HeadlineAdapter(getActivity(), tmp, R.layout.headline,
+
+		mListView.setAdapter(new HeadlineAdapter(getActivity(), tmp, R.layout.headline,
 				new String[] { "title" }, new int[] { R.id.headline_title_text }));
 	}
 
@@ -82,4 +110,9 @@ public class HeadlineFragment extends ListFragment {
 			// TODO Auto-generated constructor stub
 		}
 	}
+
+	public List<Headline> getHeadlines() {
+		return mHeadlines;
+	}
+
 }

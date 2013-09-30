@@ -4,11 +4,12 @@
     android:layout_height="match_parent"
     android:paddingTop="0dp" >
 
-    <org.buaa.career.trifle.NewsListView
-        android:id="@+id/refreshable_list"
+    <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@id/android:list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#8B0A50" >
-    </org.buaa.career.trifle.NewsListView>
+    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
 
 </LinearLayout>

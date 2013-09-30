@@ -78,8 +78,8 @@ public class DownloadArticleTask extends AsyncTask<Void, Integer, Article> {
 
 	@Override
 	protected void onPostExecute(Article result) {
-		if (result != null)
-			mActivity.getMainFragment().onPostDataLoding(result);
+//		if (result != null)
+//			mActivity.getMainFragment().onPostDataLoding(result);
 		super.onPostExecute(result);
 	}
 

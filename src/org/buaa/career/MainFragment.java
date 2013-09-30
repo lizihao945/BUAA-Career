@@ -3,18 +3,10 @@ package org.buaa.career;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.buaa.career.note.ArticleFragment;
 import org.buaa.career.note.HeadlineFragment;
-import org.buaa.career.note.HeadlineFragment.OnHeadlineSelectedListener;
-import org.buaa.career.trifle.Article;
-import org.buaa.career.trifle.DownloadHeadlineTask;
-import org.buaa.career.trifle.Headline;
-import org.buaa.career.trifle.NewsUnit;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,21 +46,6 @@ public class MainFragment extends Fragment {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt("position", mPosition);
-	}
-
-	/**
-	 * As the manager of tab fragments, MainFragment provides the method in order that AsyncTask can
-	 * do callback to invoke on HeadlineFragment.
-	 * 
-	 * @param headlines
-	 */
-	public void onPostDataLoding(List<Headline> headlines) {
-		Log.v("LOAD_DATA", "loaded from web");
-		((HeadlineFragment) mTabFragments.get(0)).setDataSource(headlines);
-	}
-
-	public void onPostDataLoding(Article result) {
-
 	}
 
 	public List<Fragment> getTabFragments() {

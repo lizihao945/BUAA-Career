@@ -6,14 +6,6 @@
     android:background="#eee"
     android:orientation="vertical" >
 
-    <FrameLayout
-        android:id="@+id/logo_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/bg_logo_bar" >
-    </FrameLayout>
-
     <RelativeLayout
         android:id="@+id/bottom_bar_highest"
         android:layout_width="match_parent"
@@ -125,8 +117,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom_bar_highest"
-        android:layout_below="@+id/logo_bar" >
+        android:layout_above="@+id/bottom_bar_highest" >
     </FrameLayout>
 
 </RelativeLayout>

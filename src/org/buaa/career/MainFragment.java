@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.buaa.career.note.HeadlineFragment;
+import org.buaa.career.note.TabOneFragment;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,7 +23,7 @@ import android.view.ViewGroup;
  * @author James
  * 
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends SherlockFragment {
 	private static List<Fragment> mTabFragments;
 	private int mPosition;
 
@@ -26,12 +32,21 @@ public class MainFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 
 		mTabFragments = new ArrayList<Fragment>();
-		Bundle args = new Bundle();
-		args.putInt("position", 1);
-		HeadlineFragment fragment = new HeadlineFragment();
-		fragment.setArguments(args);
-		mTabFragments.add(fragment);
+		mTabFragments.add(new TabOneFragment());
+		
+//		HeadlineFragment fragment = new HeadlineFragment();
+//		mTabFragments.add(fragment);
 
+		setHasOptionsMenu(true);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+		menu.add("More").setIcon(R.drawable.ic_compose)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override

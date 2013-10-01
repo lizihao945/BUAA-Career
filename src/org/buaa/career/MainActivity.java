@@ -7,20 +7,21 @@ import org.buaa.career.note.ArticleFragment;
 import org.buaa.career.note.HeadlineFragment.OnHeadlineSelectedListener;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.ImageView;
 
-public class MainActivity extends FragmentActivity implements OnHeadlineSelectedListener {
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+public class MainActivity extends SherlockFragmentActivity implements OnHeadlineSelectedListener {
 	private List<ImageView> mTabs;
 	private MainFragment mMainFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main_activity);
 
 		mMainFragment = new MainFragment();
@@ -66,8 +67,8 @@ public class MainActivity extends FragmentActivity implements OnHeadlineSelected
 		args.putString("url", url);
 		fragment.setArguments(args);
 
-//		getSupportFragmentManager().beginTransaction().add(R.id.tab_container, fragment)
-//				.hide(mMainFragment).addToBackStack(null).commit();
+		// getSupportFragmentManager().beginTransaction().add(R.id.tab_container, fragment)
+		// .hide(mMainFragment).addToBackStack(null).commit();
 		getSupportFragmentManager().beginTransaction().replace(R.id.tab_container, fragment)
 				.addToBackStack(null).commit();
 	}

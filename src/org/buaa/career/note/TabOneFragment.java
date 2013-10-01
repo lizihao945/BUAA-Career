@@ -2,31 +2,24 @@ package org.buaa.career.note;
 
 import org.buaa.career.R;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
-import android.widget.FrameLayout.LayoutParams;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
-public class TabOneFragment extends SherlockFragment {
+public class TabOneFragment extends Fragment {
+	private HeadlineFragment[] mFragments = new HeadlineFragment[4];;
 	private TabOneFragmentPagerAdapter mPagerAdapter;
 	private ViewPager mViewPager;
-	private TextView mSuspendingTab;
+	private View mMovingTab;
 	private String[] mTabTitles;
 	private float mTabX;
 
@@ -34,11 +27,10 @@ public class TabOneFragment extends SherlockFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		mPagerAdapter = new TabOneFragmentPagerAdapter(getChildFragmentManager());
 
-		mSuspendingTab = new TextView(getActivity());
-		mSuspendingTab.setBackgroundResource(R.drawable.slidebar);
-		mSuspendingTab.setTextColor(Color.WHITE);
-		mSuspendingTab.setText(getString(R.string.category_importent_notification));
-		mSuspendingTab.setGravity(Gravity.CENTER);
+		mFragments[0] = new HeadlineFragment();
+		mFragments[1] = new HeadlineFragment();
+		mFragments[2] = new HeadlineFragment();
+		mFragments[3] = new HeadlineFragment();
 
 		super.onCreate(savedInstanceState);
 	}
@@ -47,11 +39,7 @@ public class TabOneFragment extends SherlockFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.tab_one_fragment, container, false);
 
-		FrameLayout layout = (FrameLayout) view.findViewById(R.id.tab_one_tab_bar);
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT);
-		layout.addView(mSuspendingTab, params);
-		
+		mMovingTab = (FrameLayout) view.findViewById(R.id.tab_one_moving_tab);
 
 		mTabTitles = new String[4];
 		mTabTitles[0] = ((TextView) view.findViewById(R.id.tab_one_tab_one_text)).getText()
@@ -89,40 +77,26 @@ public class TabOneFragment extends SherlockFragment {
 	}
 
 	private void doTabAnimation(final int position) {
-		float width = mSuspendingTab.getWidth();
+		float width = mMovingTab.getWidth();
 		TranslateAnimation anim = new TranslateAnimation(mTabX, mTabX = width * position, 0, 0);
 		anim.setDuration(200);
 		anim.setFillAfter(true);
-		anim.setAnimationListener(new AnimationListener() {
-
-			@Override
-			public void onAnimationStart(Animation animation) {
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
-
-			@Override
-			public void onAnimationEnd(Animation animation) {
-			}
-		});
-		mSuspendingTab.startAnimation(anim);
+		mMovingTab.startAnimation(anim);
 	}
 
-	public static class TabOneFragmentPagerAdapter extends FragmentPagerAdapter {
+	public class TabOneFragmentPagerAdapter extends FragmentPagerAdapter {
 		public TabOneFragmentPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
 
 		@Override
 		public Fragment getItem(int arg0) {
-			return new HeadlineFragment();
+			return mFragments[arg0];
 		}
 
 		@Override
 		public int getCount() {
-			return 2;
+			return mFragments.length;
 		}
 	}
 }

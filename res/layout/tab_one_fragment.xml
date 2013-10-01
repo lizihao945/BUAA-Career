@@ -4,15 +4,46 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/tab_one_tab_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="35dip" >
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="35dip"
-            
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+
+            <FrameLayout
+                android:id="@+id/tab_one_moving_tab"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/moving_tab" >
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:baselineAligned="false"
             android:orientation="horizontal" >
 
@@ -69,8 +100,7 @@
                     android:text="@string/category_workplace_info" />
             </RelativeLayout>
         </LinearLayout>
-
-    </FrameLayout>
+    </RelativeLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/tab_one_pager"

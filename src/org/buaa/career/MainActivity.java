@@ -7,15 +7,12 @@ import org.buaa.career.note.ArticleFragment;
 import org.buaa.career.note.HeadlineFragment.OnHeadlineSelectedListener;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
-public class MainActivity extends SherlockFragmentActivity implements OnHeadlineSelectedListener {
+public class MainActivity extends FragmentActivity implements OnHeadlineSelectedListener {
 	private List<ImageView> mTabs;
 	private MainFragment mMainFragment;
 
@@ -67,10 +64,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnHeadline
 		args.putString("url", url);
 		fragment.setArguments(args);
 
-		// getSupportFragmentManager().beginTransaction().add(R.id.tab_container, fragment)
-		// .hide(mMainFragment).addToBackStack(null).commit();
-		getSupportFragmentManager().beginTransaction().replace(R.id.tab_container, fragment)
-				.addToBackStack(null).commit();
+		getSupportFragmentManager().beginTransaction().add(R.id.tab_container, fragment)
+				.hide(mMainFragment).addToBackStack(null).commit();
+		// getSupportFragmentManager().beginTransaction().replace(R.id.tab_container, fragment)
+		// .addToBackStack(null).commit();
 	}
 
 }

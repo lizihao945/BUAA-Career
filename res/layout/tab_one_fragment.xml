@@ -7,39 +7,8 @@
     <RelativeLayout
         android:id="@+id/tab_one_tab_bar"
         android:layout_width="match_parent"
-        android:layout_height="35dip" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" >
-
-            <FrameLayout
-                android:id="@+id/tab_one_moving_tab"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/moving_tab" >
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
-            </FrameLayout>
-        </LinearLayout>
+        android:layout_height="35dip"
+        android:background="@color/white" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,7 +17,6 @@
             android:orientation="horizontal" >
 
             <RelativeLayout
-                android:id="@+id/tab_one_tab_item_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1" >
@@ -58,7 +26,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/category_importent_notification" />
+                    android:text="@string/category_importent_notification"
+                    android:textColor="@color/bc_red"
+                    android:textStyle="bold" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -71,7 +42,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/category_recent_recent_recruitment" />
+                    android:text="@string/category_recent_recent_recruitment"
+                    android:textColor="@color/bc_gray"
+                    android:textStyle="bold" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -84,7 +58,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/category_center_info" />
+                    android:text="@string/category_center_info"
+                    android:textColor="@color/bc_gray"
+                    android:textStyle="bold" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -97,9 +74,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/category_workplace_info" />
+                    android:text="@string/category_workplace_info"
+                    android:textColor="@color/bc_gray"
+                    android:textStyle="bold" />
+
             </RelativeLayout>
         </LinearLayout>
+
+        <com.viewpagerindicator.UnderlinePageIndicator
+            android:id="@+id/tab_one_tab_indicator"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true" >
+        </com.viewpagerindicator.UnderlinePageIndicator>
     </RelativeLayout>
 
     <android.support.v4.view.ViewPager

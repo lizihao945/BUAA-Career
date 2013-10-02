@@ -63,8 +63,9 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 	}
 
 	@Override
-	public void onStart() {
-		mAdapter = new HeadlineAdapter(getActivity(), mListItems, R.layout.headline,
+	public void onActivityCreated(Bundle savedInstanceState) {
+
+		mAdapter = new HeadlineAdapter(getActivity(), mListItems, R.layout.headline_item,
 				new String[] { "title" }, new int[] { R.id.headline_title_text });
 		mListView = getPullToRefreshListView();
 
@@ -79,11 +80,15 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 				mCallBack.onHeadlineSelected(position, mListItems.get(position).url);
 				// Set the item as checked to be highlighted when in two-pane layout
 				getListView().setItemChecked(position, true);
-
 			}
 		});
 		mListView.setOnRefreshListener(this);
 		setListShown(true);
+		super.onActivityCreated(savedInstanceState);
+	}
+
+	@Override
+	public void onStart() {
 		super.onStart();
 	}
 

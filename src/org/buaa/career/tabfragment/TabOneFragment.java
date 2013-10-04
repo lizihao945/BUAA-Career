@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.buaa.career.R;
 import org.buaa.career.note.HeadlineFragment;
+import org.buaa.career.view.widget.CheckableRelativeLayout;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 public class TabOneFragment extends Fragment {
@@ -24,17 +26,30 @@ public class TabOneFragment extends Fragment {
 	private TabOneFragmentPagerAdapter mPagerAdapter;
 	private UnderlinePageIndicator mIndicator;
 	private ViewPager mViewPager;
-	private int mLastTabPosition;
-	private List<TextView> mTabTextViews;
+	private int mPosition;
+	private List<CheckableRelativeLayout> mTabs;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		mPagerAdapter = new TabOneFragmentPagerAdapter(getChildFragmentManager());
 
+		Bundle args;
 		mFragments[0] = new HeadlineFragment();
+		args = new Bundle();
+		args.putInt("channel", HeadlineFragment.NOTIFICATION);
+		mFragments[0].setArguments(args);
 		mFragments[1] = new HeadlineFragment();
+		args = new Bundle();
+		args.putInt("channel", HeadlineFragment.RECENT);
+		mFragments[1].setArguments(args);
 		mFragments[2] = new HeadlineFragment();
+		args = new Bundle();
+		args.putInt("channel", HeadlineFragment.CENTER);
+		mFragments[2].setArguments(args);
 		mFragments[3] = new HeadlineFragment();
+		args = new Bundle();
+		args.putInt("channel", HeadlineFragment.WORKING);
+		mFragments[3].setArguments(args);
 
 		super.onCreate(savedInstanceState);
 	}
@@ -43,29 +58,40 @@ public class TabOneFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.tab_one_fragment, container, false);
 
-		mTabTextViews = new ArrayList<TextView>();
-		mTabTextViews.add((TextView) view.findViewById(R.id.tab_one_tab_one_text));
-		mTabTextViews.add((TextView) view.findViewById(R.id.tab_one_tab_two_text));
-		mTabTextViews.add((TextView) view.findViewById(R.id.tab_one_tab_three_text));
-		mTabTextViews.add((TextView) view.findViewById(R.id.tab_one_tab_four_text));
+		// get reference of the category tabs in the tab bar
+		mTabs = new ArrayList<CheckableRelativeLayout>();
+		mTabs.add((CheckableRelativeLayout) view.findViewById(R.id.tab_one_tab_one));
+		mTabs.add((CheckableRelativeLayout) view.findViewById(R.id.tab_one_tab_two));
+		mTabs.add((CheckableRelativeLayout) view.findViewById(R.id.tab_one_tab_three));
+		mTabs.add((CheckableRelativeLayout) view.findViewById(R.id.tab_one_tab_four));
+		
+		// display the first category by default
+		mTabs.get(0).setChecked(true);
+		
+		// initialize the category tabs in the tab bar
+		((TextView) mTabs.get(0).findViewById(R.id.tab_one_tab_text)).setText(getResources()
+				.getString(R.string.category_importent_notification));
+		((TextView) mTabs.get(1).findViewById(R.id.tab_one_tab_text)).setText(getResources()
+				.getString(R.string.category_recent_recent_recruitment));
+		((TextView) mTabs.get(2).findViewById(R.id.tab_one_tab_text)).setText(getResources()
+				.getString(R.string.category_center_info));
+		((TextView) mTabs.get(3).findViewById(R.id.tab_one_tab_text)).setText(getResources()
+				.getString(R.string.category_workplace_info));
 
 		mViewPager = (ViewPager) view.findViewById(R.id.tab_one_pager);
 		mViewPager.setAdapter(mPagerAdapter);
 
-		mLastTabPosition = 0;
-
 		mIndicator = (UnderlinePageIndicator) view.findViewById(R.id.tab_one_tab_indicator);
 		mIndicator.setViewPager(mViewPager);
 		mIndicator.setFades(false);
-		mIndicator.setSelectedColor(getResources().getColor(R.color.bc_red));
+		mIndicator.setSelectedColor(getResources().getColor(R.color.bc_blue));
 		mIndicator.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int position) {
-				mTabTextViews.get(position).setTextColor(getResources().getColor(R.color.bc_red));
-				mTabTextViews.get(mLastTabPosition).setTextColor(
-						getResources().getColor(R.color.bc_gray));
-				mLastTabPosition = position;
+				mTabs.get(position).setChecked(true);
+				mTabs.get(mPosition).setChecked(false);
+				mPosition = position;
 			}
 
 			@Override
@@ -76,12 +102,11 @@ public class TabOneFragment extends Fragment {
 			public void onPageScrollStateChanged(int arg0) {
 			}
 		});
-		return view;
-	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
+		// display the first category by default
+		mIndicator.setCurrentItem(0);
+		mPosition = 0;
+		return view;
 	}
 
 	public class TabOneFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -98,5 +123,13 @@ public class TabOneFragment extends Fragment {
 		public int getCount() {
 			return mFragments.length;
 		}
+	}
+
+	public int getPosition() {
+		return mPosition;
+	}
+
+	public void refreshCurrTab() {
+		mFragments[mPosition].setRefreshing();
 	}
 }

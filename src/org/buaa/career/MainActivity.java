@@ -1,35 +1,171 @@
 package org.buaa.career;
 
-import org.buaa.career.note.ArticleFragment;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.buaa.career.note.ArticleActivity;
 import org.buaa.career.note.HeadlineFragment.OnHeadlineSelectedListener;
+import org.buaa.career.tabfragment.TabOneFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.view.Window;
+import android.support.v4.app.Fragment;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-public class MainActivity extends FragmentActivity implements OnHeadlineSelectedListener {
-	private MainFragment mMainFragment;
-	private ArticleFragment mArticleFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+
+public class MainActivity extends SherlockFragmentActivity implements OnHeadlineSelectedListener {
+	private List<LinearLayout> mTabs;
+	private List<ImageView> mTabImgs;
+	private List<TextView> mTabTexts;
+	private static List<Fragment> mTabFragments;
+	private int mPosition;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main_activity);
 
-		mArticleFragment = new ArticleFragment();
-		mMainFragment = new MainFragment();
-		getSupportFragmentManager().beginTransaction().add(R.id.container, mMainFragment).commit();
+		mPosition = 0;
+
+		mTabFragments = new ArrayList<Fragment>();
+		mTabFragments.add(new TabOneFragment());
+		mTabFragments.add(new TabOneFragment());
+		mTabFragments.add(new TabOneFragment());
+		mTabFragments.add(new TabOneFragment());
+
+		mTabs = new ArrayList<LinearLayout>();
+		mTabImgs = new ArrayList<ImageView>();
+		mTabTexts = new ArrayList<TextView>();
+		mTabs.add((LinearLayout) findViewById(R.id.tab_one));
+		mTabImgs.add((ImageView) findViewById(R.id.tab_one_img));
+		mTabTexts.add((TextView) findViewById(R.id.tab_one_text));
+		mTabs.add((LinearLayout) findViewById(R.id.tab_two));
+		mTabImgs.add((ImageView) findViewById(R.id.tab_two_img));
+		mTabTexts.add((TextView) findViewById(R.id.tab_two_text));
+		mTabs.add((LinearLayout) findViewById(R.id.tab_three));
+		mTabImgs.add((ImageView) findViewById(R.id.tab_three_img));
+		mTabTexts.add((TextView) findViewById(R.id.tab_three_text));
+		mTabs.add((LinearLayout) findViewById(R.id.tab_four));
+		mTabImgs.add((ImageView) findViewById(R.id.tab_four_img));
+		mTabTexts.add((TextView) findViewById(R.id.tab_four_text));
+
+		mTabs.get(0).setOnClickListener(new TabOnClickListener(0));
+		mTabs.get(1).setOnClickListener(new TabOnClickListener(1));
+		mTabs.get(2).setOnClickListener(new TabOnClickListener(2));
+		mTabs.get(3).setOnClickListener(new TabOnClickListener(3));
+
+		getSupportFragmentManager().beginTransaction()
+				.add(R.id.tab_container, mTabFragments.get(0)).commit();
+
+		getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.bc_blue));
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getSupportMenuInflater().inflate(R.menu.main_fragment_menu, menu);
+		return true;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt("position", mPosition);
 	}
 
 	@Override
 	public void onHeadlineSelected(int position, String url) {
+		Intent intent = new Intent();
 		Bundle args = new Bundle();
 		args.putInt("position", position);
 		args.putString("url", url);
-		mArticleFragment.setArguments(args);
-		getSupportFragmentManager().beginTransaction()
-				.setCustomAnimations(R.anim.slide_in_from_right, 0, 0, R.anim.slide_out_to_right)
-				.add(R.id.container, mArticleFragment).addToBackStack(null).commit();
+		intent.putExtras(args);
+		intent.setClass(MainActivity.this, ArticleActivity.class);
+		startActivity(intent);
 	}
+
+	private class TabOnClickListener implements OnClickListener {
+		private int mPosition;
+
+		public TabOnClickListener(int position) {
+			mPosition = position;
+		}
+
+		@Override
+		public void onClick(View v) {
+			if (MainActivity.this.mPosition == mPosition) {
+				((TabOneFragment) mTabFragments.get(mPosition)).refreshCurrTab();
+				return;
+			}
+			switch (mPosition) {
+			case 0:
+				mTabImgs.get(0).setImageDrawable(
+						getResources().getDrawable(R.drawable.ic_three_men_blue));
+				mTabTexts.get(0).setTextColor(getResources().getColor(R.color.bc_blue));
+				mTabImgs.get(1)
+						.setImageDrawable(getResources().getDrawable(R.drawable.ic_calendar));
+				mTabTexts.get(1).setTextColor(getResources().getColor(R.color.bc_gray));
+				mTabImgs.get(2).setImageDrawable(
+						getResources().getDrawable(R.drawable.ic_important));
+				mTabTexts.get(2).setTextColor(getResources().getColor(R.color.bc_gray));
+				mTabImgs.get(3).setImageDrawable(getResources().getDrawable(R.drawable.ic_more));
+				mTabTexts.get(3).setTextColor(getResources().getColor(R.color.bc_gray));
+				break;
+			case 1:
+				mTabImgs.get(0).setImageDrawable(
+						getResources().getDrawable(R.drawable.ic_three_men));
+				mTabTexts.get(0).setTextColor(getResources().getColor(R.color.bc_gray));
+				mTabImgs.get(1).setImageDrawable(
+						getResources().getDrawable(R.drawable.ic_calendar_blue));
+				mTabTexts.get(1).setTextColor(getResources().getColor(R.color.bc_blue));
+				mTabImgs.get(2).setImageDrawable(
+						getResources().getDrawable(R.drawable.ic_important));
+				mTabTexts.get(2).setTextColor(getResources().getColor(R.color.bc_gray));
+				mTabImgs.get(3).setImageDrawable(getResources().getDrawable(R.drawable.ic_more));
+				mTabTexts.get(3).setTextColor(getResources().getColor(R.color.bc_gray));
+				break;
+			case 2:
+				mTabImgs.get(0).setImageDrawable(
+						getResources().getDrawable(R.drawable.ic_three_men));
+				mTabTexts.get(0).setTextColor(getResources().getColor(R.color.bc_gray));
+				mTabImgs.get(1)
+						.setImageDrawable(getResources().getDrawable(R.drawable.ic_calendar));
+				mTabTexts.get(1).setTextColor(getResources().getColor(R.color.bc_gray));
+				mTabImgs.get(2).setImageDrawable(
+						getResources().getDrawable(R.drawable.ic_important_blue));
+				mTabTexts.get(2).setTextColor(getResources().getColor(R.color.bc_blue));
+				mTabImgs.get(3).setImageDrawable(getResources().getDrawable(R.drawable.ic_more));
+				mTabTexts.get(3).setTextColor(getResources().getColor(R.color.bc_gray));
+				break;
+			case 3:
+				mTabImgs.get(0).setImageDrawable(
+						getResources().getDrawable(R.drawable.ic_three_men));
+				mTabTexts.get(0).setTextColor(getResources().getColor(R.color.bc_gray));
+				mTabImgs.get(1)
+						.setImageDrawable(getResources().getDrawable(R.drawable.ic_calendar));
+				mTabTexts.get(1).setTextColor(getResources().getColor(R.color.bc_gray));
+				mTabImgs.get(2).setImageDrawable(
+						getResources().getDrawable(R.drawable.ic_important));
+				mTabTexts.get(2).setTextColor(getResources().getColor(R.color.bc_gray));
+				mTabImgs.get(3).setImageDrawable(
+						getResources().getDrawable(R.drawable.ic_more_blue));
+				mTabTexts.get(3).setTextColor(getResources().getColor(R.color.bc_blue));
+			}
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.tab_container, mTabFragments.get(mPosition)).addToBackStack(null)
+					.commit();
+			MainActivity.this.mPosition = mPosition;
+		}
+	}
+
+	@Deprecated
+	public List<Fragment> getTabFragments() {
+		return mTabFragments;
+	}
+
 }

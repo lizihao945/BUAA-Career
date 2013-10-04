@@ -9,6 +9,145 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:id="@+id/main_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <FrameLayout
+                    android:id="@+id/tab_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/bottom_tab_bar"
+                    android:layout_gravity="center" >
+                </FrameLayout>
+
+                <LinearLayout
+                    android:id="@+id/bottom_tab_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/white"
+                    android:baselineAligned="false"
+                    android:paddingBottom="1dp"
+                    android:paddingTop="1dp" >
+
+                    <LinearLayout
+                        android:id="@+id/tab_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/tab_one_img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:focusable="true"
+                            android:src="@drawable/ic_three_men_blue" />
+
+                        <TextView
+                            android:id="@+id/tab_one_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:text="@string/tab_notification"
+                            android:textColor="@color/bc_blue"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/tab_two_img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:scaleType="matrix"
+                            android:src="@drawable/ic_calendar" />
+
+                        <TextView
+                            android:id="@+id/tab_two_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:text="@string/tab_calendar"
+                            android:textColor="@color/bc_gray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab_three"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/tab_three_img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:scaleType="matrix"
+                            android:src="@drawable/ic_important" />
+
+                        <TextView
+                            android:id="@+id/tab_three_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:text="@string/tab_favourite"
+                            android:textColor="@color/bc_gray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab_four"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/tab_four_img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:scaleType="matrix"
+                            android:src="@drawable/ic_more" />
+
+                        <TextView
+                            android:id="@+id/tab_four_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:text="@string/tab_more"
+                            android:textColor="@color/bc_gray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
     </FrameLayout>
 
 </RelativeLayout>

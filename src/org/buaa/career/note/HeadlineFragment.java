@@ -18,6 +18,7 @@ import org.htmlparser.util.NodeIterator;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
+import android.R.anim;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,6 +44,12 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
  */
 public class HeadlineFragment extends PullToRefreshListFragment implements
 		OnRefreshListener2<ListView> {
+	public static final int NOTIFICATION = 517;
+	public static final int RECENT = 518;
+	public static final int CENTER = 519;
+	public static final int WORKING = 520;
+
+	private int mChannel;
 	private OnHeadlineSelectedListener mCallBack;
 	private final LinkedList<Headline> mListItems = new LinkedList<Headline>();;
 	private SimpleAdapter mAdapter;
@@ -56,6 +63,15 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		try {
+			mChannel = getArguments().getInt("channel");
+			if (mChannel == 0)
+				throw new NullPointerException();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			System.err.println("No proper args set for HeadlineFragment");
+		}
+
 		for (int i = 0; i < 20; i++) {
 			Headline tmpMap = new Headline();
 			mListItems.add(tmpMap);
@@ -67,29 +83,24 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 
 		mAdapter = new HeadlineAdapter(getActivity(), mListItems, R.layout.headline_item,
 				new String[] { "title" }, new int[] { R.id.headline_title_text });
+
 		mListView = getPullToRefreshListView();
-
 		mListView.setAdapter(mAdapter);
-
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				mCallBack = (OnHeadlineSelectedListener) (MainActivity) getActivity();
-				// Notify the parent activity of selected item
-				mCallBack.onHeadlineSelected(position, mListItems.get(position).url);
+				// Notify the main activity of selected item
+				mCallBack.onHeadlineSelected(position, mListItems.get(position - 1).url);
 				// Set the item as checked to be highlighted when in two-pane layout
 				getListView().setItemChecked(position, true);
 			}
 		});
 		mListView.setOnRefreshListener(this);
 		setListShown(true);
-		super.onActivityCreated(savedInstanceState);
-	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
+		super.onActivityCreated(savedInstanceState);
 	}
 
 	public class HeadlineAdapter extends SimpleAdapter {
@@ -97,15 +108,35 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 		public HeadlineAdapter(Context context, LinkedList<Headline> data, int resource,
 				String[] from, int[] to) {
 			super(context, data, resource, from, to);
-			// TODO Auto-generated constructor stub
 		}
 	}
 
 	public class DownloadHeadlineTask extends AsyncTask<Void, Integer, LinkedList<Headline>> {
-		private static final String URL_STRING = "http://career.buaa.edu.cn/website/zphxx.h";
+		private static final String NOTIFICATION_URL = "http://career.buaa.edu.cn/website/zytz.h";
+		private static final String RECENT_URL = "http://career.buaa.edu.cn/website/zphxx.h";
+		private static final String CENTER_URL = "http://career.buaa.edu.cn/website/zpxx_info.h";
+		private static final String WORKING_URL = "http://career.buaa.edu.cn/website/zxzpxx.h";
 		private static final String ENCODE = "GB2312";
 
+		private final String URL_STRING;
+
 		public DownloadHeadlineTask() {
+			switch (mChannel) {
+			case NOTIFICATION:
+				URL_STRING = NOTIFICATION_URL;
+				break;
+			case RECENT:
+				URL_STRING = RECENT_URL;
+				break;
+			case CENTER:
+				URL_STRING = CENTER_URL;
+				break;
+			case WORKING:
+				URL_STRING = WORKING_URL;
+				break;
+			default:
+				URL_STRING = null;
+			}
 		}
 
 		@Override
@@ -143,7 +174,7 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 				for (NodeIterator e = aNodes.elements(); e.hasMoreNodes();) {
 					LinkTag node = (LinkTag) e.nextNode();
 					Headline headline = new Headline((node.toPlainTextString().trim()),
-							Headline.ZHUAN_CHANG, node.getLink());
+							node.getLink());
 					tmp.add(headline);
 				}
 				return tmp;
@@ -182,7 +213,13 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 	@Override
 	protected PullToRefreshListView onCreatePullToRefreshListView(LayoutInflater inflater,
 			Bundle savedInstanceState) {
-		return new PullToRefreshListView(getActivity(), Mode.BOTH, AnimationStyle.FLIP);
+		return (PullToRefreshListView) inflater.inflate(R.layout.ptr_listview, null);
+	}
+
+	public void setRefreshing() {
+		if (mListView.isRefreshing())
+			return;
+		mListView.setRefreshing();
 	}
 
 }

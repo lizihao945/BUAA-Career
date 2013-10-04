@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="purple">#333399</color>
     <color name="light_blue">#3399FF</color>
     <color name="white">#FFFFFF</color>
     <color name="bc_gray">#BDBDBD</color>
-    <color name="bc_blue">#3366CC</color>
+    <color name="bc_blue">#0066CC</color>
     <color name="bc_black">#212324</color>
     <color name="bc_yellow">#EDD04E</color>
     <color name="bc_sky_blue">#88BDFF</color>
     <color name="bc_deep_blue">#56818A</color>
     <color name="bc_red">#BD1111</color>
-    
+    <color name="item_text_disabled">#333399</color>
+    <color name="item_text_checked">#FFFFFF</color>
+    <color name="item_text_unchecked">#000000</color>
+    <color name="item_bg_unchecked">#FFFFFF</color>
+    <color name="item_bg_checked">#0066CC</color>
+    <color name="tab_text_disabled">#333399</color>
+    <color name="tab_text_checked">#0066CC</color>
+    <color name="tab_text_unchecked">#BDBDBD</color>
+
 </resources>

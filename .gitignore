@@ -11,6 +11,9 @@ gen
 *.apk
 *.ap_
 
+# files from windows
+Thumbs.db
+
 # files for the dex VM
 *.dex
 

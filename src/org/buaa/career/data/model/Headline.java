@@ -7,22 +7,43 @@ public class Headline extends HashMap<String, Object> {
 	 * 
 	 */
 	private static final long serialVersionUID = 2571174627939774226L;
-	public final String title;
-	public final String url;
-	public final static int UNDEFINED = -1;
+	private String title;
+	private String url;
+	private String time;
+	public static int UNDEFINED = -1;
 
 	public Headline() {
-		this("not set");
+		title = "not set";
 	}
 
-	public Headline(String string) {
-		this(string, "");
-	}
-
-	public Headline(String title, String url) {
+	public Headline setTitle(String title) {
 		this.title = title;
-		this.url = url;
 		put("title", title);
+		return this;
+	}
+
+	public Headline setUrl(String url) {
+		this.url = url;
+		put("url", url);
+		return this;
+	}
+
+	public Headline setTime(String time) {
+		this.time = time;
+		put("time", time);
+		return this;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public String getTime() {
+		return time;
 	}
 
 }

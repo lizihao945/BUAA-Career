@@ -1,4 +1,4 @@
-package org.buaa.career.trifle;
+package org.buaa.career;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

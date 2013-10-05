@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.buaa.career.trifle.ArticleActivity"
+            android:name="org.buaa.career.ArticleActivity"
             android:screenOrientation="portrait" >
         </activity>
     </application>

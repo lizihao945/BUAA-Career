@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.buaa.career.tabfragment.TabOneFragment;
 import org.buaa.career.tabfragment.HeadlineFragment.OnHeadlineSelectedListener;
-import org.buaa.career.trifle.ArticleActivity;
 
 import android.content.Intent;
 import android.os.Bundle;

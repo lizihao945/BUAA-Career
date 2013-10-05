@@ -8,6 +8,7 @@ import org.buaa.career.MainActivity;
 import org.buaa.career.MainActivity.Scrollable;
 import org.buaa.career.R;
 import org.buaa.career.data.model.Headline;
+import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.AndFilter;
@@ -19,13 +20,11 @@ import org.htmlparser.util.NodeIterator;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
-import android.R.anim;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -33,8 +32,6 @@ import android.widget.SimpleAdapter;
 
 import com.handmark.pulltorefresh.extras.listfragment.PullToRefreshListFragment;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.AnimationStyle;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
@@ -46,7 +43,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
  */
 public class HeadlineFragment extends PullToRefreshListFragment implements
 		OnRefreshListener2<ListView>, Scrollable {
-
 	public static final int NOTIFICATION = 517;
 	public static final int RECENT = 518;
 	public static final int CENTER = 519;
@@ -57,6 +53,8 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 	private final LinkedList<Headline> mListItems = new LinkedList<Headline>();;
 	private SimpleAdapter mAdapter;
 	private PullToRefreshListView mListView;
+
+	private boolean isRefreshedOnce = false;
 
 	public interface OnHeadlineSelectedListener {
 		public void onHeadlineSelected(int position, String url);
@@ -85,7 +83,8 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 
 		mAdapter = new HeadlineAdapter(getActivity(), mListItems, R.layout.headline_item,
-				new String[] { "title" }, new int[] { R.id.headline_title_text });
+				new String[] { "title", "time" }, new int[] { R.id.headline_title_text,
+						R.id.headline_desc_text });
 
 		mListView = getPullToRefreshListView();
 		mListView.setAdapter(mAdapter);
@@ -95,13 +94,16 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				mCallBack = (OnHeadlineSelectedListener) (MainActivity) getActivity();
 				// Notify the main activity of selected item
-				mCallBack.onHeadlineSelected(position, mListItems.get(position - 1).url);
+				mCallBack.onHeadlineSelected(position, mListItems.get(position - 1).getUrl());
 				// Set the item as checked to be highlighted when in two-pane layout
 				getListView().setItemChecked(position, true);
 			}
 		});
 		mListView.setOnRefreshListener(this);
 		setListShown(true);
+
+		if (!isRefreshedOnce)
+			setRefreshing();
 
 		super.onActivityCreated(savedInstanceState);
 	}
@@ -169,15 +171,26 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 
 				// titles are hyperlinks
 				NodeList aNodes = new NodeList();
+				// time is in <span> in <td> width="15%"
+				NodeList spanNodes = new NodeList();
+				Node node;
 				for (NodeIterator e = tableNodes.elements(); e.hasMoreNodes();) {
-					e.nextNode().collectInto(aNodes, new TagNameFilter("a"));
+					node = e.nextNode();
+					node.collectInto(aNodes, new TagNameFilter("a"));
+					node.collectInto(spanNodes, new TagNameFilter("span"));
 				}
-				// get the text out and analyze
+
+				// get the link text and time
 				LinkedList<Headline> tmp = new LinkedList<Headline>();
+				NodeIterator e1 = spanNodes.elements();
+				LinkTag node1;
+				Node node2;
 				for (NodeIterator e = aNodes.elements(); e.hasMoreNodes();) {
-					LinkTag node = (LinkTag) e.nextNode();
-					Headline headline = new Headline((node.toPlainTextString().trim()),
-							node.getLink());
+					node1 = (LinkTag) e.nextNode();
+					node2 = e1.nextNode();
+					Headline headline = new Headline();
+					headline.setTitle(node1.toPlainTextString().trim()).setUrl(node1.getLink())
+							.setTime(node2.toPlainTextString().trim());
 					tmp.add(headline);
 				}
 				return tmp;

@@ -1,12 +1,13 @@
-package org.buaa.career.note;
+package org.buaa.career.tabfragment;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 
 import org.buaa.career.MainActivity;
+import org.buaa.career.MainActivity.Scrollable;
 import org.buaa.career.R;
-import org.buaa.career.trifle.Headline;
+import org.buaa.career.data.model.Headline;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.AndFilter;
@@ -24,6 +25,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -43,7 +45,8 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
  * 
  */
 public class HeadlineFragment extends PullToRefreshListFragment implements
-		OnRefreshListener2<ListView> {
+		OnRefreshListener2<ListView>, Scrollable {
+
 	public static final int NOTIFICATION = 517;
 	public static final int RECENT = 518;
 	public static final int CENTER = 519;
@@ -220,6 +223,12 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 		if (mListView.isRefreshing())
 			return;
 		mListView.setRefreshing();
+	}
+
+	@Override
+	public void scrollToTop() {
+		// TODO make action bar call this method
+		mListView.scrollTo(0, 0);
 	}
 
 }

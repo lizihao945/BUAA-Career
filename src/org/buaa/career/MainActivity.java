@@ -3,9 +3,9 @@ package org.buaa.career;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.buaa.career.note.ArticleActivity;
-import org.buaa.career.note.HeadlineFragment.OnHeadlineSelectedListener;
 import org.buaa.career.tabfragment.TabOneFragment;
+import org.buaa.career.tabfragment.HeadlineFragment.OnHeadlineSelectedListener;
+import org.buaa.career.trifle.ArticleActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +20,11 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 
 public class MainActivity extends SherlockFragmentActivity implements OnHeadlineSelectedListener {
+	
+	public static interface Scrollable {
+		public void scrollToTop();
+	}
+	
 	private List<LinearLayout> mTabs;
 	private List<ImageView> mTabImgs;
 	private List<TextView> mTabTexts;
@@ -62,7 +67,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnHeadline
 
 		getSupportFragmentManager().beginTransaction()
 				.add(R.id.tab_container, mTabFragments.get(0)).commit();
-
 		getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.bc_blue));
 	}
 
@@ -157,8 +161,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnHeadline
 				mTabTexts.get(3).setTextColor(getResources().getColor(R.color.bc_blue));
 			}
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.tab_container, mTabFragments.get(mPosition)).addToBackStack(null)
-					.commit();
+					.replace(R.id.tab_container, mTabFragments.get(mPosition)).commit();
 			MainActivity.this.mPosition = mPosition;
 		}
 	}

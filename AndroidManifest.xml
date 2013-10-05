@@ -29,7 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.buaa.career.note.ArticleActivity" >
+        <activity android:name="org.buaa.career.trifle.ArticleActivity" >
         </activity>
     </application>
 

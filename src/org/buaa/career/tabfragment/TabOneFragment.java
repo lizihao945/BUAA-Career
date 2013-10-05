@@ -1,10 +1,10 @@
 package org.buaa.career.tabfragment;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.buaa.career.R;
-import org.buaa.career.note.HeadlineFragment;
 import org.buaa.career.view.widget.CheckableRelativeLayout;
 
 import android.os.Bundle;
@@ -64,10 +64,10 @@ public class TabOneFragment extends Fragment {
 		mTabs.add((CheckableRelativeLayout) view.findViewById(R.id.tab_one_tab_two));
 		mTabs.add((CheckableRelativeLayout) view.findViewById(R.id.tab_one_tab_three));
 		mTabs.add((CheckableRelativeLayout) view.findViewById(R.id.tab_one_tab_four));
-		
+
 		// display the first category by default
 		mTabs.get(0).setChecked(true);
-		
+
 		// initialize the category tabs in the tab bar
 		((TextView) mTabs.get(0).findViewById(R.id.tab_one_tab_text)).setText(getResources()
 				.getString(R.string.category_importent_notification));
@@ -107,6 +107,23 @@ public class TabOneFragment extends Fragment {
 		mIndicator.setCurrentItem(0);
 		mPosition = 0;
 		return view;
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		// Basically, the child FragmentManager ends up with a broken internal state when it is
+		// detached from the activity.
+		try {
+			Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+			childFragmentManager.setAccessible(true);
+			childFragmentManager.set(this, null);
+
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public class TabOneFragmentPagerAdapter extends FragmentPagerAdapter {

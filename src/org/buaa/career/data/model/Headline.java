@@ -1,4 +1,4 @@
-package org.buaa.career.trifle;
+package org.buaa.career.data.model;
 
 import java.util.HashMap;
 

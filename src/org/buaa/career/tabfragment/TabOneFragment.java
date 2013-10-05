@@ -15,10 +15,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 public class TabOneFragment extends Fragment {
@@ -64,6 +64,9 @@ public class TabOneFragment extends Fragment {
 		mTabs.add((CheckableRelativeLayout) view.findViewById(R.id.tab_one_tab_two));
 		mTabs.add((CheckableRelativeLayout) view.findViewById(R.id.tab_one_tab_three));
 		mTabs.add((CheckableRelativeLayout) view.findViewById(R.id.tab_one_tab_four));
+
+		for (int i = 0; i < 4; i++)
+			mTabs.get(i).setOnClickListener(new TabOnClickListener(i));
 
 		// display the first category by default
 		mTabs.get(0).setChecked(true);
@@ -124,6 +127,21 @@ public class TabOneFragment extends Fragment {
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private class TabOnClickListener implements OnClickListener {
+		private int mPosition;
+
+		private TabOnClickListener(int position) {
+			mPosition = position;
+		}
+
+		@Override
+		public void onClick(View v) {
+			if (mPosition != TabOneFragment.this.mPosition)
+				mIndicator.setCurrentItem(mPosition);
+		}
+
 	}
 
 	public class TabOneFragmentPagerAdapter extends FragmentPagerAdapter {

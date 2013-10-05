@@ -2,7 +2,7 @@
 <org.buaa.career.view.widget.CheckableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    android:background="@drawable/item_bg_selector"
+    android:background="@drawable/bg_item_selector"
     android:orientation="horizontal"
     android:paddingBottom="5dp"
     android:paddingLeft="20dp"

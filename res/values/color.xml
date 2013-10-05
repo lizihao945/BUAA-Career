@@ -16,7 +16,7 @@
     <color name="item_text_unchecked">#000000</color>
     <color name="item_bg_unchecked">#FFFFFF</color>
     <color name="item_bg_checked">#0066CC</color>
-    <color name="tab_text_disabled">#333399</color>
+    <color name="tab_text_pressed">#FFFFFF</color>
     <color name="tab_text_checked">#0066CC</color>
     <color name="tab_text_unchecked">#BDBDBD</color>
 

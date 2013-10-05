@@ -6,7 +6,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Checkable;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 public class CheckableRelativeLayout extends RelativeLayout implements Checkable {
 	private Checkable tab_one_tab_text;
@@ -31,7 +30,6 @@ public class CheckableRelativeLayout extends RelativeLayout implements Checkable
 	public void setChecked(boolean paramBoolean) {
 		getView();
 		tab_one_tab_text.setChecked(paramBoolean);
-		System.out.println(tab_one_tab_text.toString());
 	}
 
 	public void toggle() {

@@ -28,9 +28,12 @@ public class TabOneFragment extends Fragment {
 	private ViewPager mViewPager;
 	private int mPosition;
 	private List<CheckableRelativeLayout> mTabs;
+	private View mFooterView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
 		mPagerAdapter = new TabOneFragmentPagerAdapter(getChildFragmentManager());
 
 		Bundle args;
@@ -51,7 +54,7 @@ public class TabOneFragment extends Fragment {
 		args.putInt("channel", HeadlineFragment.WORKING);
 		mFragments[3].setArguments(args);
 
-		super.onCreate(savedInstanceState);
+		setRetainInstance(true);
 	}
 
 	@Override
@@ -109,6 +112,7 @@ public class TabOneFragment extends Fragment {
 		// display the first category by default
 		mIndicator.setCurrentItem(0);
 		mPosition = 0;
+
 		return view;
 	}
 

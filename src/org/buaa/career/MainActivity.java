@@ -19,11 +19,11 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 
 public class MainActivity extends SherlockFragmentActivity implements OnHeadlineSelectedListener {
-	
+
 	public static interface Scrollable {
 		public void scrollToTop();
 	}
-	
+
 	private List<LinearLayout> mTabs;
 	private List<ImageView> mTabImgs;
 	private List<TextView> mTabTexts;
@@ -66,6 +66,17 @@ public class MainActivity extends SherlockFragmentActivity implements OnHeadline
 
 		getSupportFragmentManager().beginTransaction()
 				.add(R.id.tab_container, mTabFragments.get(0)).commit();
+		getSupportFragmentManager().beginTransaction()
+				.add(R.id.tab_container, mTabFragments.get(1)).commit();
+		getSupportFragmentManager().beginTransaction()
+				.add(R.id.tab_container, mTabFragments.get(2)).commit();
+		getSupportFragmentManager().beginTransaction()
+				.add(R.id.tab_container, mTabFragments.get(3)).commit();
+
+		getSupportFragmentManager().beginTransaction().hide(mTabFragments.get(1)).commit();
+		getSupportFragmentManager().beginTransaction().hide(mTabFragments.get(2)).commit();
+		getSupportFragmentManager().beginTransaction().hide(mTabFragments.get(3)).commit();
+
 		getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.bc_blue));
 	}
 
@@ -159,8 +170,9 @@ public class MainActivity extends SherlockFragmentActivity implements OnHeadline
 						getResources().getDrawable(R.drawable.ic_more_blue));
 				mTabTexts.get(3).setTextColor(getResources().getColor(R.color.bc_blue));
 			}
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.tab_container, mTabFragments.get(mPosition)).commit();
+			getSupportFragmentManager().beginTransaction().hide(mTabFragments.get(0))
+					.hide(mTabFragments.get(1)).hide(mTabFragments.get(2))
+					.hide(mTabFragments.get(3)).show(mTabFragments.get(mPosition)).commit();
 			MainActivity.this.mPosition = mPosition;
 		}
 	}

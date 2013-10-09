@@ -32,7 +32,7 @@ import android.widget.SimpleAdapter;
 
 import com.handmark.pulltorefresh.extras.listfragment.PullToRefreshListFragment;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 /**
@@ -42,7 +42,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
  * 
  */
 public class HeadlineFragment extends PullToRefreshListFragment implements
-		OnRefreshListener2<ListView>, Scrollable {
+		OnRefreshListener<ListView>, Scrollable {
 	public static final int NOTIFICATION = 517;
 	public static final int RECENT = 518;
 	public static final int CENTER = 519;
@@ -53,6 +53,7 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 	private final LinkedList<Headline> mListItems = new LinkedList<Headline>();;
 	private SimpleAdapter mAdapter;
 	private PullToRefreshListView mListView;
+	private View mFooterView;
 
 	private boolean isRefreshedOnce = false;
 
@@ -77,6 +78,7 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 			Headline tmpMap = new Headline();
 			mListItems.add(tmpMap);
 		}
+
 	}
 
 	@Override
@@ -102,8 +104,17 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 		mListView.setOnRefreshListener(this);
 		setListShown(true);
 
-		if (!isRefreshedOnce)
+		if (!isRefreshedOnce) {
 			setRefreshing();
+			isRefreshedOnce = true;
+		}
+
+		mFooterView = LayoutInflater.from(getActivity())
+				.inflate(R.layout.news_listview_footer, null);
+		mFooterView.setClickable(false);
+		mFooterView.setFocusable(false);
+		
+		getPullToRefreshListView().getRefreshableView().addFooterView(mFooterView);
 
 		super.onActivityCreated(savedInstanceState);
 	}
@@ -207,6 +218,8 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 
 		@Override
 		protected void onPostExecute(LinkedList<Headline> result) {
+			if (result == null)
+				return;
 			mListItems.clear();
 			mListItems.addAll(result);
 			mAdapter.notifyDataSetChanged();
@@ -214,16 +227,6 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 			mListView.onRefreshComplete();
 			super.onPostExecute(result);
 		}
-	}
-
-	@Override
-	public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-		new DownloadHeadlineTask().execute();
-	}
-
-	@Override
-	public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-		new DownloadHeadlineTask().execute();
 	}
 
 	@Override
@@ -242,6 +245,11 @@ public class HeadlineFragment extends PullToRefreshListFragment implements
 	public void scrollToTop() {
 		// TODO make action bar call this method
 		mListView.scrollTo(0, 0);
+	}
+
+	@Override
+	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+		new DownloadHeadlineTask().execute();
 	}
 
 }

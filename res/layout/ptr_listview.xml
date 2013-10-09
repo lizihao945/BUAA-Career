@@ -4,10 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:overScrollMode="never"
     ptr:ptrAnimationStyle="rotate"
     ptr:ptrDrawable="@drawable/ic_loading"
     ptr:ptrHeaderBackground="@color/white"
     ptr:ptrHeaderTextColor="@color/bc_black"
-    ptr:ptrMode="both" >
+    ptr:ptrMode="pullFromStart"
+    ptr:ptrOverScroll="true"
+    ptr:ptrShowIndicator="false" >
 
 </com.handmark.pulltorefresh.library.PullToRefreshListView>

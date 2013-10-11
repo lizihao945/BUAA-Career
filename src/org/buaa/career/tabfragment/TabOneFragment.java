@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.buaa.career.R;
+import org.buaa.career.data.model.News;
 import org.buaa.career.view.widget.CheckableRelativeLayout;
 
 import android.os.Bundle;
@@ -22,7 +23,7 @@ import android.widget.TextView;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 public class TabOneFragment extends Fragment {
-	private HeadlineFragment[] mFragments = new HeadlineFragment[4];;
+	private NewsFragment[] mFragments = new NewsFragment[4];;
 	private TabOneFragmentPagerAdapter mPagerAdapter;
 	private UnderlinePageIndicator mIndicator;
 	private ViewPager mViewPager;
@@ -37,21 +38,21 @@ public class TabOneFragment extends Fragment {
 		mPagerAdapter = new TabOneFragmentPagerAdapter(getChildFragmentManager());
 
 		Bundle args;
-		mFragments[0] = new HeadlineFragment();
+		mFragments[0] = new NewsFragment();
 		args = new Bundle();
-		args.putInt("channel", HeadlineFragment.NOTIFICATION);
+		args.putInt("channel", News.NOTIFICATION);
 		mFragments[0].setArguments(args);
-		mFragments[1] = new HeadlineFragment();
+		mFragments[1] = new NewsFragment();
 		args = new Bundle();
-		args.putInt("channel", HeadlineFragment.RECENT);
+		args.putInt("channel", News.RECENT_RECRUITMENT);
 		mFragments[1].setArguments(args);
-		mFragments[2] = new HeadlineFragment();
+		mFragments[2] = new NewsFragment();
 		args = new Bundle();
-		args.putInt("channel", HeadlineFragment.CENTER);
+		args.putInt("channel", News.CENTER_RECRUITMENT);
 		mFragments[2].setArguments(args);
-		mFragments[3] = new HeadlineFragment();
+		mFragments[3] = new NewsFragment();
 		args = new Bundle();
-		args.putInt("channel", HeadlineFragment.WORKING);
+		args.putInt("channel", News.WORKING_RECRUITMENT);
 		mFragments[3].setArguments(args);
 
 		setRetainInstance(true);

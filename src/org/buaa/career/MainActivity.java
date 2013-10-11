@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.buaa.career.tabfragment.TabOneFragment;
-import org.buaa.career.tabfragment.HeadlineFragment.OnHeadlineSelectedListener;
+import org.buaa.career.tabfragment.NewsFragment.OnHeadlineSelectedListener;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -64,6 +64,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnHeadline
 		mTabs.get(2).setOnClickListener(new TabOnClickListener(2));
 		mTabs.get(3).setOnClickListener(new TabOnClickListener(3));
 
+		// Notice that when dealing with re-creating issues,
+		// savedInstanceStata shoud be considered.
 		getSupportFragmentManager().beginTransaction()
 				.add(R.id.tab_container, mTabFragments.get(0)).commit();
 		getSupportFragmentManager().beginTransaction()

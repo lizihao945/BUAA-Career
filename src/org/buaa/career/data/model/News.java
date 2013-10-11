@@ -2,7 +2,11 @@ package org.buaa.career.data.model;
 
 import java.util.HashMap;
 
-public class Headline extends HashMap<String, Object> {
+public class News extends HashMap<String, Object> {
+	public static final int NOTIFICATION = 517;
+	public static final int RECENT_RECRUITMENT = 518;
+	public static final int CENTER_RECRUITMENT = 519;
+	public static final int WORKING_RECRUITMENT = 520;
 	/**
 	 * 
 	 */
@@ -12,23 +16,23 @@ public class Headline extends HashMap<String, Object> {
 	private String time;
 	public static int UNDEFINED = -1;
 
-	public Headline() {
+	public News() {
 		title = "not set";
 	}
 
-	public Headline setTitle(String title) {
+	public News setTitle(String title) {
 		this.title = title;
 		put("title", title);
 		return this;
 	}
 
-	public Headline setUrl(String url) {
+	public News setUrl(String url) {
 		this.url = url;
 		put("url", url);
 		return this;
 	}
 
-	public Headline setTime(String time) {
+	public News setTime(String time) {
 		this.time = time;
 		put("time", time);
 		return this;

@@ -10,14 +10,19 @@ import org.buaa.career.data.model.News;
 import org.buaa.career.trifle.DownloadNewsTask;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.handmark.pulltorefresh.extras.listfragment.PullToRefreshListFragment;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -39,6 +44,7 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 	private SimpleAdapter mAdapter;
 	private PullToRefreshListView mListView;
 	private View mFooterView;
+	private int currMaxPageNum;
 
 	public interface OnHeadlineSelectedListener {
 		public void onHeadlineSelected(int position, String url);
@@ -56,6 +62,7 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 			System.err.println("No proper args set for HeadlineFragment");
 		}
 		mListItems = new LinkedList<News>();
+		currMaxPageNum = 1;
 		new LoadDBDataTask().execute();
 	}
 
@@ -78,16 +85,22 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 
 		mFooterView = LayoutInflater.from(getActivity()).inflate(R.layout.news_listview_footer,
 				null);
-		mFooterView.setClickable(false);
-		mFooterView.setFocusable(false);
+		mFooterView.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				((TextView) mFooterView.findViewById(R.id.tv_refreshing))
+						.setText(R.string.refreshing);
+				new DownloadNewsTask(NewsFragment.this, mChannel, ++currMaxPageNum).execute();
+			}
+		});
 		getPullToRefreshListView().getRefreshableView().addFooterView(mFooterView);
 
 		mAdapter = new HeadlineAdapter(getActivity(), mListItems, R.layout.headline_item,
 				new String[] { "title", "time" }, new int[] { R.id.headline_title_text,
 						R.id.headline_desc_text });
 		setListAdapter(mAdapter);
-		
+
 		super.onActivityCreated(savedInstanceState);
 	}
 
@@ -103,11 +116,26 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 		mListView.setRefreshing();
 	}
 
-	public void updateList(LinkedList<News> result) {
-		mListItems.clear();
-		mListItems.addAll(result);
-		mAdapter.notifyDataSetChanged();
-		mListView.onRefreshComplete();
+	public void updateList(boolean isHead, LinkedList<News> result) {
+		if (isHead) {
+			mListItems.clear();
+			mListItems.addAll(result);
+			mAdapter.notifyDataSetChanged();
+			mListView.onRefreshComplete();
+		} else {
+			mListItems.addAll(result);
+			mAdapter.notifyDataSetChanged();
+		}
+	}
+
+	public void updateFailed(boolean isHead) {
+		Toast.makeText(getActivity(), R.string.refresh_failed, Toast.LENGTH_SHORT).show();
+		if (isHead)
+			mListView.onRefreshComplete();
+		else {
+			((TextView) mFooterView.findViewById(R.id.tv_refreshing))
+					.setText(R.string.refresh_failed_footer);
+		}
 	}
 
 	@Override
@@ -118,7 +146,19 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 
 	@Override
 	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-		new DownloadNewsTask(this, mChannel).execute();
+		new DownloadNewsTask(this, mChannel, 1).execute();
+	}
+
+	private boolean isConnected() {
+		ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connectivityManager != null) {
+			NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+			if (networkInfo != null && networkInfo.isConnected()
+					&& networkInfo.getState() == NetworkInfo.State.CONNECTED)
+				return true;
+		}
+		return false;
 	}
 
 	private class HeadlineAdapter extends SimpleAdapter {

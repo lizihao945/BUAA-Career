@@ -1664,10 +1664,14 @@ containing a value of this type.
         public static final int pull_to_refresh_pull_label=0x7f0a000d;
         public static final int pull_to_refresh_refreshing_label=0x7f0a000f;
         public static final int pull_to_refresh_release_label=0x7f0a000e;
+        public static final int refresh_failed=0x7f0a001f;
+        public static final int refresh_failed_footer=0x7f0a0020;
+        public static final int refreshing=0x7f0a001e;
         public static final int tab_calendar=0x7f0a001a;
         public static final int tab_favourite=0x7f0a001b;
         public static final int tab_more=0x7f0a001c;
         public static final int tab_notification=0x7f0a0019;
+        public static final int touch_to_refresh=0x7f0a001d;
     }
     public static final class style {
         /** 

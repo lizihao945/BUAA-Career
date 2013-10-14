@@ -3,8 +3,8 @@ package org.buaa.career;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.buaa.career.tabfragment.TabOneFragment;
 import org.buaa.career.tabfragment.NewsFragment.OnHeadlineSelectedListener;
+import org.buaa.career.tabfragment.TabOneFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -84,7 +84,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnHeadline
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.main_fragment_menu, menu);
+		getSupportMenuInflater().inflate(R.menu.main_activity_menu, menu);
 		return true;
 	}
 
@@ -95,9 +95,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnHeadline
 	}
 
 	@Override
-	public void onHeadlineSelected(int position, String url) {
+	public void onNewsSelected(int channel, int position, String url) {
 		Intent intent = new Intent();
 		Bundle args = new Bundle();
+		args.putInt("channel", channel);
 		args.putInt("position", position);
 		args.putString("url", url);
 		intent.putExtras(args);

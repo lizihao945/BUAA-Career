@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import org.buaa.career.MainActivity;
 import org.buaa.career.MainActivity.Scrollable;
 import org.buaa.career.R;
-import org.buaa.career.data.db.NewsListDBTask;
+import org.buaa.career.data.db.NewsArticleDBTask;
 import org.buaa.career.data.model.News;
 import org.buaa.career.trifle.DownloadNewsTask;
 
@@ -47,7 +47,7 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 	private int currMaxPageNum;
 
 	public interface OnHeadlineSelectedListener {
-		public void onHeadlineSelected(int position, String url);
+		public void onNewsSelected(int channel, int position, String url);
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				mCallBack = (OnHeadlineSelectedListener) (MainActivity) getActivity();
 				// Notify the main activity of selected item
-				mCallBack.onHeadlineSelected(position, mListItems.get(position - 1).getUrl());
+				mCallBack.onNewsSelected(mChannel, position, mListItems.get(position - 1).getUrl());
 				// Set the item as checked to be highlighted when in two-pane layout
 				getListView().setItemChecked(position, true);
 			}
@@ -176,11 +176,11 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 			switch (mChannel) {
 			case News.NOTIFICATION:
 				mListItems.clear();
-				mListItems.addAll(NewsListDBTask.getRecentNotifications(getActivity()));
+				mListItems.addAll(NewsArticleDBTask.getRecentNotifications(getActivity()));
 				break;
 			case News.RECENT_RECRUITMENT:
 				mListItems.clear();
-				mListItems.addAll(NewsListDBTask.getRecentRecentRecruitment(getActivity()));
+				mListItems.addAll(NewsArticleDBTask.getRecentRecentRecruitment(getActivity()));
 			default:
 				break;
 			}

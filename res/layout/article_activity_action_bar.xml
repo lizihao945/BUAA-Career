@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:layout_gravity="right|center_vertical"
+    android:orientation="horizontal" >
+
+    <org.buaa.career.view.widget.CheckableFrameLayout
+        android:id="@+id/add_to_favourite"
+        android:layout_width="@dimen/abs__action_bar_default_height"
+        android:layout_height="@dimen/abs__action_bar_default_height"
+        android:background="@drawable/bg_action_bar_item_selector" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center" >
+
+            <CheckedTextView
+                android:id="@+id/tv_add_to_favourite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_add_to_favourite_selector" />
+        </LinearLayout>
+    </org.buaa.career.view.widget.CheckableFrameLayout>
+
+</LinearLayout>

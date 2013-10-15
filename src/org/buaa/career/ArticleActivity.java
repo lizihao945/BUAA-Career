@@ -6,7 +6,9 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 
+import org.buaa.career.data.db.NewsArticleDBTask;
 import org.buaa.career.trifle.Constant;
+import org.buaa.career.view.widget.CheckableFrameLayout;
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
@@ -22,14 +24,15 @@ import org.htmlparser.util.ParserException;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.WebView;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 
 public class ArticleActivity extends SherlockActivity {
 	private String mFilePath;
@@ -38,7 +41,9 @@ public class ArticleActivity extends SherlockActivity {
 	private int mPosition;
 	private WebView mWebView;
 	private String mUrl;
+	private boolean isStarred;
 	private ActionBar mActionBar;
+	private CheckableFrameLayout mAddToFavourite;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,8 @@ public class ArticleActivity extends SherlockActivity {
 		mChannel = args.getInt("channel");
 		mPosition = args.getInt("position");
 		mUrl = args.getString("url");
+		isStarred = args.getBoolean("starred");
+
 		mFileName = mChannel + "_" + mPosition + ".html";
 		mFilePath = "file://" + getFilesDir().getAbsolutePath() + "/" + mFileName;
 
@@ -83,22 +90,40 @@ public class ArticleActivity extends SherlockActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		mActionBar = getSupportActionBar();
 		mActionBar.setBackgroundDrawable(getResources().getDrawable(R.color.bc_blue));
-		getSupportMenuInflater().inflate(R.menu.article_activity_menu, menu);
-		MenuItem menuItem = (MenuItem) menu.findItem(R.id.menu_add_to_favourite);
-		menuItem.setCheckable(true);
-		menuItem.setChecked(true);
-		menuItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+		mActionBar.setCustomView(R.layout.article_activity_action_bar);
+		mActionBar.setDisplayShowCustomEnabled(true);
+		mActionBar.setHomeButtonEnabled(true);
+		mActionBar.setDisplayHomeAsUpEnabled(true);
+		mActionBar.setDisplayShowHomeEnabled(true);
+
+		mAddToFavourite = (CheckableFrameLayout) findViewById(R.id.add_to_favourite);
+		mAddToFavourite.setChecked(isStarred);
+		mAddToFavourite.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				if (item.isChecked())
-					item.setChecked(false);
-				else
-					item.setChecked(false);
-				return false;
+			public void onClick(View v) {
+				if (mAddToFavourite.isChecked()) {
+
+				} else {
+					Log.v("ARTICLE", "article added to favourtie");
+					NewsArticleDBTask.setNewsAsStarred(mChannel,
+							NewsArticleDBTask.getNotificationByUrl(mUrl, ArticleActivity.this),
+							ArticleActivity.this);
+				}
+
+				mAddToFavourite.toggle();
 			}
 		});
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	public class DownloadArticleTask extends AsyncTask<Void, Integer, Node> {

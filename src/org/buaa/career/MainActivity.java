@@ -3,6 +3,7 @@ package org.buaa.career;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.buaa.career.data.model.News;
 import org.buaa.career.tabfragment.NewsFragment.OnHeadlineSelectedListener;
 import org.buaa.career.tabfragment.TabOneFragment;
 
@@ -95,12 +96,14 @@ public class MainActivity extends SherlockFragmentActivity implements OnHeadline
 	}
 
 	@Override
-	public void onNewsSelected(int channel, int position, String url) {
-		Intent intent = new Intent();
+	public void onNewsSelected(News news, int position) {
 		Bundle args = new Bundle();
-		args.putInt("channel", channel);
+		args.putInt("channel", news.getChannel());
 		args.putInt("position", position);
-		args.putString("url", url);
+		args.putString("url", news.getUrl());
+		args.putBoolean("starred", news.isStarred());
+
+		Intent intent = new Intent();
 		intent.putExtras(args);
 		intent.setClass(MainActivity.this, ArticleActivity.class);
 		startActivity(intent);

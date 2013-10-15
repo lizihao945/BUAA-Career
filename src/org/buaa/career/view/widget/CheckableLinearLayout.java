@@ -8,8 +8,8 @@ import android.widget.Checkable;
 import android.widget.LinearLayout;
 
 public class CheckableLinearLayout extends LinearLayout implements Checkable {
-	private Checkable headline_desc_text;
-	private Checkable headline_title_text;
+	private Checkable headline_desc_text = null;
+	private Checkable headline_title_text = null;
 
 	public CheckableLinearLayout(Context paramContext) {
 		super(paramContext);
@@ -23,6 +23,7 @@ public class CheckableLinearLayout extends LinearLayout implements Checkable {
 		super(context, attrs, defStyle);
 	}
 
+	@Override
 	public boolean isChecked() {
 		if (headline_title_text == null)
 			headline_title_text = ((Checkable) findViewById(R.id.headline_title_text));
@@ -31,15 +32,17 @@ public class CheckableLinearLayout extends LinearLayout implements Checkable {
 		return headline_desc_text.isChecked();
 	}
 
-	public void setChecked(boolean paramBoolean) {
+	@Override
+	public void setChecked(boolean checked) {
 		if (headline_title_text == null)
 			headline_title_text = ((Checkable) findViewById(R.id.headline_title_text));
 		if (this.headline_desc_text == null)
 			headline_desc_text = ((Checkable) findViewById(R.id.headline_desc_text));
-		headline_desc_text.setChecked(paramBoolean);
-		headline_title_text.setChecked(paramBoolean);
+		headline_desc_text.setChecked(checked);
+		headline_title_text.setChecked(checked);
 	}
 
+	@Override
 	public void toggle() {
 		if (headline_title_text == null)
 			headline_title_text = ((Checkable) findViewById(R.id.headline_title_text));

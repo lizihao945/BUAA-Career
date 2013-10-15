@@ -2,7 +2,7 @@
 <org.buaa.career.view.widget.CheckableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    android:background="@drawable/bg_item_selector"
+    android:background="@drawable/bg_list_item_selector"
     android:orientation="horizontal"
     android:paddingBottom="5dp"
     android:paddingLeft="20dp"
@@ -37,7 +37,6 @@
                 android:id="@+id/headline_desc_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="时间: 2013-11-07 14:30 地点: 主北307教室"
                 android:textColor="@color/headline_item_text_selector"
                 android:textSize="13sp"
                 android:textStyle="bold" />

@@ -47,7 +47,7 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 	private int currMaxPageNum;
 
 	public interface OnHeadlineSelectedListener {
-		public void onNewsSelected(int channel, int position, String url);
+		public void onNewsSelected(News news, int position);
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				mCallBack = (OnHeadlineSelectedListener) (MainActivity) getActivity();
 				// Notify the main activity of selected item
-				mCallBack.onNewsSelected(mChannel, position, mListItems.get(position - 1).getUrl());
+				mCallBack.onNewsSelected(mListItems.get(position - 1), position);
 				// Set the item as checked to be highlighted when in two-pane layout
 				getListView().setItemChecked(position, true);
 			}
@@ -96,7 +96,7 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 		});
 		getPullToRefreshListView().getRefreshableView().addFooterView(mFooterView);
 
-		mAdapter = new HeadlineAdapter(getActivity(), mListItems, R.layout.headline_item,
+		mAdapter = new HeadlineAdapter(getActivity(), mListItems, R.layout.news_item,
 				new String[] { "title", "time" }, new int[] { R.id.headline_title_text,
 						R.id.headline_desc_text });
 		setListAdapter(mAdapter);

@@ -8,7 +8,7 @@ import android.widget.Checkable;
 import android.widget.RelativeLayout;
 
 public class CheckableRelativeLayout extends RelativeLayout implements Checkable {
-	private Checkable tab_one_tab_text;
+	private Checkable tab_one_tab_text = null;
 
 	public CheckableRelativeLayout(Context paramContext) {
 		super(paramContext);
@@ -22,16 +22,19 @@ public class CheckableRelativeLayout extends RelativeLayout implements Checkable
 		super(context, attrs, defStyle);
 	}
 
+	@Override
 	public boolean isChecked() {
 		getView();
 		return tab_one_tab_text.isChecked();
 	}
 
-	public void setChecked(boolean paramBoolean) {
+	@Override
+	public void setChecked(boolean checked) {
 		getView();
-		tab_one_tab_text.setChecked(paramBoolean);
+		tab_one_tab_text.setChecked(checked);
 	}
 
+	@Override
 	public void toggle() {
 		getView();
 		tab_one_tab_text.toggle();

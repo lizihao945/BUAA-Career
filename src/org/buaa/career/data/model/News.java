@@ -15,7 +15,6 @@ public class News extends HashMap<String, Object> {
 	private String title;
 	private String url;
 	private String time;
-	private boolean starred;
 	public static int UNDEFINED = -1;
 
 	public News() {
@@ -46,11 +45,6 @@ public class News extends HashMap<String, Object> {
 		return this;
 	}
 
-	public News setStarred(boolean starred) {
-		this.starred = starred;
-		return this;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -65,9 +59,5 @@ public class News extends HashMap<String, Object> {
 
 	public int getChannel() {
 		return channel;
-	}
-
-	public boolean isStarred() {
-		return starred;
 	}
 }

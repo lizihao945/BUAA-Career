@@ -6,7 +6,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 
-import org.buaa.career.data.db.NewsArticleDBTask;
+import org.buaa.career.data.db.DBTask;
+import org.buaa.career.data.model.News;
 import org.buaa.career.trifle.Constant;
 import org.buaa.career.view.widget.CheckableFrameLayout;
 import org.htmlparser.Node;
@@ -41,7 +42,6 @@ public class ArticleActivity extends SherlockActivity {
 	private int mPosition;
 	private WebView mWebView;
 	private String mUrl;
-	private boolean isStarred;
 	private ActionBar mActionBar;
 	private CheckableFrameLayout mAddToFavourite;
 
@@ -54,10 +54,10 @@ public class ArticleActivity extends SherlockActivity {
 		mChannel = args.getInt("channel");
 		mPosition = args.getInt("position");
 		mUrl = args.getString("url");
-		isStarred = args.getBoolean("starred");
 
 		mFileName = mChannel + "_" + mPosition + ".html";
-		mFilePath = "file://" + getFilesDir().getAbsolutePath() + "/" + mFileName;
+		mFilePath = "file://" + getFilesDir().getAbsolutePath() + "/"
+				+ mFileName;
 
 		mWebView = (WebView) findViewById(R.id.web_view);
 		mWebView.getSettings().setDefaultTextEncodingName(Constant.ENCODE);
@@ -89,7 +89,8 @@ public class ArticleActivity extends SherlockActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		mActionBar = getSupportActionBar();
-		mActionBar.setBackgroundDrawable(getResources().getDrawable(R.color.bc_blue));
+		mActionBar.setBackgroundDrawable(getResources().getDrawable(
+				R.color.bc_blue));
 		mActionBar.setCustomView(R.layout.article_activity_action_bar);
 		mActionBar.setDisplayShowCustomEnabled(true);
 		mActionBar.setHomeButtonEnabled(true);
@@ -97,19 +98,16 @@ public class ArticleActivity extends SherlockActivity {
 		mActionBar.setDisplayShowHomeEnabled(true);
 
 		mAddToFavourite = (CheckableFrameLayout) findViewById(R.id.add_to_favourite);
-		mAddToFavourite.setChecked(isStarred);
+		mAddToFavourite.setChecked(DBTask.isStarred(mUrl, this));
 		mAddToFavourite.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				if (mAddToFavourite.isChecked()) {
-
-				} else {
-					Log.v("ARTICLE", "article added to favourtie");
-					NewsArticleDBTask.setNewsAsStarred(mChannel,
-							NewsArticleDBTask.getNotificationByUrl(mUrl, ArticleActivity.this),
+				if (mAddToFavourite.isChecked())
+					DBTask.removeStarredNews(mUrl, mChannel,
 							ArticleActivity.this);
-				}
+				else
+					DBTask.addStarrdNews(mUrl, mChannel, ArticleActivity.this);
 
 				mAddToFavourite.toggle();
 			}
@@ -146,7 +144,8 @@ public class ArticleActivity extends SherlockActivity {
 						new HasAttributeFilter("align", "center"),
 						new HasAttributeFilter("cellpadding", "0"),
 						new HasAttributeFilter("cellspacing", "0"),
-						new HasAttributeFilter("width", "939"), new HasAttributeFilter("id", "__") };
+						new HasAttributeFilter("width", "939"),
+						new HasAttributeFilter("id", "__") };
 				highestFilter.setPredicates(filters);
 
 				// get the div in the table
@@ -177,7 +176,8 @@ public class ArticleActivity extends SherlockActivity {
 		protected void onPostExecute(Node result) {
 
 			try {
-				FileOutputStream outputStream = openFileOutput(mFileName, Context.MODE_PRIVATE);
+				FileOutputStream outputStream = openFileOutput(mFileName,
+						Context.MODE_PRIVATE);
 				outputStream.write(result.toHtml().getBytes(Constant.ENCODE));
 				outputStream.close();
 			} catch (Exception e) {

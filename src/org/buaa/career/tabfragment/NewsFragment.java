@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import org.buaa.career.MainActivity;
 import org.buaa.career.MainActivity.Scrollable;
 import org.buaa.career.R;
-import org.buaa.career.data.db.NewsArticleDBTask;
+import org.buaa.career.data.db.DBTask;
 import org.buaa.career.data.model.News;
 import org.buaa.career.trifle.DownloadNewsTask;
 
@@ -176,11 +176,11 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 			switch (mChannel) {
 			case News.NOTIFICATION:
 				mListItems.clear();
-				mListItems.addAll(NewsArticleDBTask.getRecentNotifications(getActivity()));
+				mListItems.addAll(DBTask.getRecentNotifications(getActivity()));
 				break;
 			case News.RECENT_RECRUITMENT:
 				mListItems.clear();
-				mListItems.addAll(NewsArticleDBTask.getRecentRecentRecruitment(getActivity()));
+				mListItems.addAll(DBTask.getRecentRecentRecruitment(getActivity()));
 			default:
 				break;
 			}

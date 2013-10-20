@@ -101,7 +101,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnHeadline
 		args.putInt("channel", news.getChannel());
 		args.putInt("position", position);
 		args.putString("url", news.getUrl());
-		args.putBoolean("starred", news.isStarred());
 
 		Intent intent = new Intent();
 		intent.putExtras(args);

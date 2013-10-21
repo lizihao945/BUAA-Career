@@ -8,6 +8,7 @@ import org.buaa.career.R;
 import org.buaa.career.data.db.DBTask;
 import org.buaa.career.data.model.News;
 import org.buaa.career.trifle.DownloadNewsTask;
+import org.buaa.career.trifle.HeadlineAdapter;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -30,7 +31,8 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 /**
- * Fragment that contains the ViewPager, replaced when one tab claims to show detailed information.
+ * Fragment that contains the ViewPager, replaced when one tab claims to show
+ * detailed information.
  * 
  * @author James
  * 
@@ -41,7 +43,7 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 	private int mChannel;
 	private OnHeadlineSelectedListener mCallBack;
 	private LinkedList<News> mListItems;
-	private SimpleAdapter mAdapter;
+	private SimpleAdapter mAdapter = null;
 	private PullToRefreshListView mListView;
 	private View mFooterView;
 	private int currMaxPageNum;
@@ -77,7 +79,8 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 				mCallBack = (OnHeadlineSelectedListener) (MainActivity) getActivity();
 				// Notify the main activity of selected item
 				mCallBack.onNewsSelected(mListItems.get(position - 1), position);
-				// Set the item as checked to be highlighted when in two-pane layout
+				// Set the item as checked to be highlighted when in two-pane
+				// layout
 				getListView().setItemChecked(position, true);
 			}
 		});
@@ -96,9 +99,8 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 		});
 		getPullToRefreshListView().getRefreshableView().addFooterView(mFooterView);
 
-		mAdapter = new HeadlineAdapter(getActivity(), mListItems, R.layout.news_item,
-				new String[] { "title", "time" }, new int[] { R.id.headline_title_text,
-						R.id.headline_desc_text });
+		mAdapter = new HeadlineAdapter(getActivity(), mListItems, R.layout.news_item, new String[] {
+				"title", "time" }, new int[] { R.id.headline_title_text, R.id.headline_desc_text });
 		setListAdapter(mAdapter);
 
 		super.onActivityCreated(savedInstanceState);
@@ -161,14 +163,6 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 		return false;
 	}
 
-	private class HeadlineAdapter extends SimpleAdapter {
-
-		public HeadlineAdapter(Context context, LinkedList<News> data, int resource, String[] from,
-				int[] to) {
-			super(context, data, resource, from, to);
-		}
-	}
-
 	private class LoadDBDataTask extends AsyncTask<Void, Integer, LinkedList<News>> {
 
 		@Override
@@ -189,6 +183,8 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 
 		@Override
 		protected void onPostExecute(LinkedList<News> result) {
+			if (mAdapter == null)
+				return;
 			mAdapter.notifyDataSetChanged();
 			super.onPostExecute(result);
 		}

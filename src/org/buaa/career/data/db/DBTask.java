@@ -1,5 +1,6 @@
 package org.buaa.career.data.db;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -33,17 +34,14 @@ public class DBTask {
 	 */
 	public static ArrayList<News> getRecentNotifications(Context context) {
 		ArrayList<News> rt = new ArrayList<News>();
-		String sql = "select * from " + NotificationTable.TABLE_NAME
-				+ " limit 0, 21";
-		Cursor c = DataBaseHelper.getInstance(context).getReadableDatabase()
-				.rawQuery(sql, null);
+		String sql = "select * from " + NotificationTable.TABLE_NAME + " limit 0, 21";
+		Cursor c = DataBaseHelper.getInstance(context).getReadableDatabase().rawQuery(sql, null);
 		int titleColumnIndex = c.getColumnIndex(NotificationTable.TITLE);
 		int timeColumnIndex = c.getColumnIndex(NotificationTable.TIME);
 		int urlColumnIndex = c.getColumnIndex(NotificationTable.URL);
 		while (c.moveToNext()) {
 			News news = new News();
-			news.setTitle(c.getString(titleColumnIndex))
-					.setTime(c.getString(timeColumnIndex))
+			news.setTitle(c.getString(titleColumnIndex)).setTime(c.getString(timeColumnIndex))
 					.setUrl(c.getString(urlColumnIndex));
 			rt.add(news);
 		}
@@ -52,17 +50,33 @@ public class DBTask {
 
 	public static ArrayList<News> getRecentRecentRecruitment(Context context) {
 		ArrayList<News> rt = new ArrayList<News>();
-		String sql = "select * from " + RecentRecruitmentTable.TABLE_NAME
-				+ " limit 0, 21";
-		Cursor c = DataBaseHelper.getInstance(context).getReadableDatabase()
-				.rawQuery(sql, null);
+		String sql = "select * from " + RecentRecruitmentTable.TABLE_NAME + " limit 0, 21";
+		Cursor c = DataBaseHelper.getInstance(context).getReadableDatabase().rawQuery(sql, null);
 		int titleColumnIndex = c.getColumnIndex(RecentRecruitmentTable.TITLE);
 		int timeColumnIndex = c.getColumnIndex(RecentRecruitmentTable.TIME);
 		int urlColumnIndex = c.getColumnIndex(RecentRecruitmentTable.URL);
 		while (c.moveToNext()) {
 			News news = new News();
-			news.setTitle(c.getString(titleColumnIndex))
-					.setTime(c.getString(timeColumnIndex))
+			news.setTitle(c.getString(titleColumnIndex)).setTime(c.getString(timeColumnIndex))
+					.setUrl(c.getString(urlColumnIndex));
+			rt.add(news);
+		}
+		return rt;
+	}
+
+	public static ArrayList<News> getNewsByDate(Date date, Context context) {
+		ArrayList<News> rt = new ArrayList<News>();
+		String time = date.toString();
+		time = time.replace("-0", "-");
+		String sql = "select * from " + NotificationTable.TABLE_NAME + " where "
+				+ NotificationTable.TIME + "=\"" + time + "\"";
+		Cursor c = DataBaseHelper.getInstance(context).getReadableDatabase().rawQuery(sql, null);
+		int titleColumnIndex = c.getColumnIndex(NotificationTable.TITLE);
+		int timeColumnIndex = c.getColumnIndex(NotificationTable.TIME);
+		int urlColumnIndex = c.getColumnIndex(NotificationTable.URL);
+		while (c.moveToNext()) {
+			News news = new News();
+			news.setTitle(c.getString(titleColumnIndex)).setTime(c.getString(timeColumnIndex))
 					.setUrl(c.getString(urlColumnIndex));
 			rt.add(news);
 		}
@@ -79,8 +93,8 @@ public class DBTask {
 			DataBaseHelper
 					.getInstance(context)
 					.getWritableDatabase()
-					.insertWithOnConflict(NotificationTable.TABLE_NAME, null,
-							values, SQLiteDatabase.CONFLICT_IGNORE);
+					.insertWithOnConflict(NotificationTable.TABLE_NAME, null, values,
+							SQLiteDatabase.CONFLICT_IGNORE);
 			break;
 		case News.RECENT_RECRUITMENT:
 			values.put(RecentRecruitmentTable.TITLE, news.getTitle());
@@ -89,8 +103,8 @@ public class DBTask {
 			DataBaseHelper
 					.getInstance(context)
 					.getWritableDatabase()
-					.insertWithOnConflict(RecentRecruitmentTable.TABLE_NAME,
-							null, values, SQLiteDatabase.CONFLICT_IGNORE);
+					.insertWithOnConflict(RecentRecruitmentTable.TABLE_NAME, null, values,
+							SQLiteDatabase.CONFLICT_IGNORE);
 			break;
 		}
 	}
@@ -117,18 +131,16 @@ public class DBTask {
 						SQLiteDatabase.CONFLICT_IGNORE);
 	}
 
-	public static void removeStarredNews(String url, int channel,
-			Context context) {
+	public static void removeStarredNews(String url, int channel, Context context) {
 		DataBaseHelper.getInstance(context).getWritableDatabase()
 				.delete(StarredTable.TABLE_NAME, "url=?", new String[] { url });
 
 	}
 
 	public static boolean isStarred(String url, Context context) {
-		String sql = "select * from " + StarredTable.TABLE_NAME + " where "
-				+ StarredTable.URL + "=\"" + url + "\"";
-		Cursor c = DataBaseHelper.getInstance(context).getReadableDatabase()
-				.rawQuery(sql, null);
+		String sql = "select * from " + StarredTable.TABLE_NAME + " where " + StarredTable.URL
+				+ "=\"" + url + "\"";
+		Cursor c = DataBaseHelper.getInstance(context).getReadableDatabase().rawQuery(sql, null);
 		return c.moveToNext();
 	}
 }

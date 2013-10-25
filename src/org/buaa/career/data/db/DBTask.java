@@ -14,8 +14,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class DBTask {
+	public static String TAG = "DBTask";
+
 	public static LinkedList<News> getAllNews() {
 
 		return null;
@@ -42,7 +45,7 @@ public class DBTask {
 		while (c.moveToNext()) {
 			News news = new News();
 			news.setTitle(c.getString(titleColumnIndex)).setTime(c.getString(timeColumnIndex))
-					.setUrl(c.getString(urlColumnIndex));
+					.setUrl(c.getString(urlColumnIndex)).setChannel(News.NOTIFICATION);
 			rt.add(news);
 		}
 		return rt;
@@ -58,7 +61,7 @@ public class DBTask {
 		while (c.moveToNext()) {
 			News news = new News();
 			news.setTitle(c.getString(titleColumnIndex)).setTime(c.getString(timeColumnIndex))
-					.setUrl(c.getString(urlColumnIndex));
+					.setUrl(c.getString(urlColumnIndex)).setChannel(News.RECENT_RECRUITMENT);
 			rt.add(news);
 		}
 		return rt;
@@ -66,11 +69,20 @@ public class DBTask {
 
 	public static ArrayList<News> getNewsByDate(Date date, Context context) {
 		ArrayList<News> rt = new ArrayList<News>();
-		String time = date.toString();
-		time = time.replace("-0", "-");
-		String sql = "select * from " + NotificationTable.TABLE_NAME + " where "
-				+ NotificationTable.TIME + "=\"" + time + "\"";
-		Cursor c = DataBaseHelper.getInstance(context).getReadableDatabase().rawQuery(sql, null);
+		String oriTime = date.toString();
+		String tabOneTime = oriTime.replace("-0", "-");
+		String tabOneSql = "select * from " + NotificationTable.TABLE_NAME + " where "
+				+ NotificationTable.TIME + "=\"" + tabOneTime + "\"";
+		String tabTwoSql = "select * from " + RecentRecruitmentTable.TABLE_NAME + " where "
+				+ RecentRecruitmentTable.TIME + " like \"" + oriTime + "%\"";
+		// String tabThreeSql = "select * from " + NotificationTable.TABLE_NAME
+		// + " where "
+		// + NotificationTable.TIME + "=\"" + time + "\"";
+		// String tabFourSql = "select * from " + NotificationTable.TABLE_NAME +
+		// " where "
+		// + NotificationTable.TIME + "=\"" + time + "\"";
+		Cursor c = DataBaseHelper.getInstance(context).getReadableDatabase()
+				.rawQuery(tabOneSql, null);
 		int titleColumnIndex = c.getColumnIndex(NotificationTable.TITLE);
 		int timeColumnIndex = c.getColumnIndex(NotificationTable.TIME);
 		int urlColumnIndex = c.getColumnIndex(NotificationTable.URL);
@@ -80,6 +92,58 @@ public class DBTask {
 					.setUrl(c.getString(urlColumnIndex));
 			rt.add(news);
 		}
+
+		c = DataBaseHelper.getInstance(context).getReadableDatabase().rawQuery(tabTwoSql, null);
+		titleColumnIndex = c.getColumnIndex(RecentRecruitmentTable.TITLE);
+		timeColumnIndex = c.getColumnIndex(RecentRecruitmentTable.TIME);
+		urlColumnIndex = c.getColumnIndex(RecentRecruitmentTable.URL);
+		while (c.moveToNext()) {
+			System.out.println("found!");
+			News news = new News();
+			news.setTitle(c.getString(titleColumnIndex)).setTime(c.getString(timeColumnIndex))
+					.setUrl(c.getString(urlColumnIndex));
+			rt.add(news);
+		}
+
+		return rt;
+	}
+
+	public static ArrayList<News> getFavouriteNews(Context context) {
+		ArrayList<News> rt = new ArrayList<News>();
+		String sql = "select * from " + StarredTable.TABLE_NAME;
+
+		Cursor c = DataBaseHelper.getInstance(context).getReadableDatabase().rawQuery(sql, null);
+		int categoryColumnIndex = c.getColumnIndex(StarredTable.CATEGORY);
+		int urlColumnIndex = c.getColumnIndex(StarredTable.URL);
+		while (c.moveToNext()) {
+			String url = c.getString(urlColumnIndex);
+			switch (c.getInt(categoryColumnIndex)) {
+			case News.NOTIFICATION:
+				String subSql = "select * from " + NotificationTable.TABLE_NAME + " where "
+						+ NotificationTable.URL + "=\"" + url + "\"";
+				Cursor c1 = DataBaseHelper.getInstance(context).getReadableDatabase()
+						.rawQuery(subSql, null);
+
+				int titleColumnIndex = c1.getColumnIndex(NotificationTable.TITLE);
+				int timeColumnIndex = c1.getColumnIndex(NotificationTable.TIME);
+
+				if (c1.moveToNext()) {
+					News news = new News();
+					news.setTitle(c1.getString(titleColumnIndex))
+							.setTime(c1.getString(timeColumnIndex)).setUrl(url);
+					rt.add(news);
+				}
+				break;
+			case News.RECENT_RECRUITMENT:
+				break;
+			case News.CENTER_RECRUITMENT:
+				break;
+			case News.WORKING_RECRUITMENT:
+				break;
+			}
+
+		}
+		Log.v(TAG, rt.size() + " favourite items");
 		return rt;
 	}
 

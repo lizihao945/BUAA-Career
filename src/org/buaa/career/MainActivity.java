@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.buaa.career.data.model.News;
 import org.buaa.career.tabfragment.NewsFragment.OnHeadlineSelectedListener;
+import org.buaa.career.tabfragment.TabFourFragment;
 import org.buaa.career.tabfragment.TabOneFragment;
+import org.buaa.career.tabfragment.TabThreeFragment;
 import org.buaa.career.tabfragment.TabTwoFragment;
 
 import android.content.Intent;
@@ -20,8 +22,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 
-public class MainActivity extends SherlockFragmentActivity implements
-		OnHeadlineSelectedListener {
+public class MainActivity extends SherlockFragmentActivity implements OnHeadlineSelectedListener {
 
 	public static interface Scrollable {
 		public void scrollToTop();
@@ -43,8 +44,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 		mTabFragments = new ArrayList<Fragment>();
 		mTabFragments.add(new TabOneFragment());
 		mTabFragments.add(new TabTwoFragment());
-		mTabFragments.add(new TabOneFragment());
-		mTabFragments.add(new TabOneFragment());
+		mTabFragments.add(new TabThreeFragment());
+		mTabFragments.add(new TabFourFragment());
 
 		mTabs = new ArrayList<LinearLayout>();
 		mTabImgs = new ArrayList<ImageView>();
@@ -78,15 +79,11 @@ public class MainActivity extends SherlockFragmentActivity implements
 		getSupportFragmentManager().beginTransaction()
 				.add(R.id.tab_container, mTabFragments.get(3)).commit();
 
-		getSupportFragmentManager().beginTransaction()
-				.hide(mTabFragments.get(1)).commit();
-		getSupportFragmentManager().beginTransaction()
-				.hide(mTabFragments.get(2)).commit();
-		getSupportFragmentManager().beginTransaction()
-				.hide(mTabFragments.get(3)).commit();
+		getSupportFragmentManager().beginTransaction().hide(mTabFragments.get(1)).commit();
+		getSupportFragmentManager().beginTransaction().hide(mTabFragments.get(2)).commit();
+		getSupportFragmentManager().beginTransaction().hide(mTabFragments.get(3)).commit();
 
-		getSupportActionBar().setBackgroundDrawable(
-				getResources().getDrawable(R.color.bc_blue));
+		getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.bc_blue));
 	}
 
 	@Override
@@ -124,91 +121,66 @@ public class MainActivity extends SherlockFragmentActivity implements
 		@Override
 		public void onClick(View v) {
 			if (MainActivity.this.mPosition == mPosition) {
-				((TabOneFragment) mTabFragments.get(mPosition))
-						.refreshCurrTab();
+				((TabOneFragment) mTabFragments.get(mPosition)).refreshCurrTab();
 				return;
 			}
 			switch (mPosition) {
 			case 0:
 				mTabImgs.get(0).setImageDrawable(
-						getResources()
-								.getDrawable(R.drawable.ic_three_men_blue));
-				mTabTexts.get(0).setTextColor(
-						getResources().getColor(R.color.bc_blue));
-				mTabImgs.get(1).setImageDrawable(
-						getResources().getDrawable(R.drawable.ic_calendar));
-				mTabTexts.get(1).setTextColor(
-						getResources().getColor(R.color.bc_gray));
+						getResources().getDrawable(R.drawable.ic_three_men_blue));
+				mTabTexts.get(0).setTextColor(getResources().getColor(R.color.bc_blue));
+				mTabImgs.get(1)
+						.setImageDrawable(getResources().getDrawable(R.drawable.ic_calendar));
+				mTabTexts.get(1).setTextColor(getResources().getColor(R.color.bc_gray));
 				mTabImgs.get(2).setImageDrawable(
 						getResources().getDrawable(R.drawable.ic_important));
-				mTabTexts.get(2).setTextColor(
-						getResources().getColor(R.color.bc_gray));
-				mTabImgs.get(3).setImageDrawable(
-						getResources().getDrawable(R.drawable.ic_more));
-				mTabTexts.get(3).setTextColor(
-						getResources().getColor(R.color.bc_gray));
+				mTabTexts.get(2).setTextColor(getResources().getColor(R.color.bc_gray));
+				mTabImgs.get(3).setImageDrawable(getResources().getDrawable(R.drawable.ic_more));
+				mTabTexts.get(3).setTextColor(getResources().getColor(R.color.bc_gray));
 				break;
 			case 1:
 				mTabImgs.get(0).setImageDrawable(
 						getResources().getDrawable(R.drawable.ic_three_men));
-				mTabTexts.get(0).setTextColor(
-						getResources().getColor(R.color.bc_gray));
-				mTabImgs.get(1)
-						.setImageDrawable(
-								getResources().getDrawable(
-										R.drawable.ic_calendar_blue));
-				mTabTexts.get(1).setTextColor(
-						getResources().getColor(R.color.bc_blue));
+				mTabTexts.get(0).setTextColor(getResources().getColor(R.color.bc_gray));
+				mTabImgs.get(1).setImageDrawable(
+						getResources().getDrawable(R.drawable.ic_calendar_blue));
+				mTabTexts.get(1).setTextColor(getResources().getColor(R.color.bc_blue));
 				mTabImgs.get(2).setImageDrawable(
 						getResources().getDrawable(R.drawable.ic_important));
-				mTabTexts.get(2).setTextColor(
-						getResources().getColor(R.color.bc_gray));
-				mTabImgs.get(3).setImageDrawable(
-						getResources().getDrawable(R.drawable.ic_more));
-				mTabTexts.get(3).setTextColor(
-						getResources().getColor(R.color.bc_gray));
+				mTabTexts.get(2).setTextColor(getResources().getColor(R.color.bc_gray));
+				mTabImgs.get(3).setImageDrawable(getResources().getDrawable(R.drawable.ic_more));
+				mTabTexts.get(3).setTextColor(getResources().getColor(R.color.bc_gray));
 				break;
 			case 2:
 				mTabImgs.get(0).setImageDrawable(
 						getResources().getDrawable(R.drawable.ic_three_men));
-				mTabTexts.get(0).setTextColor(
-						getResources().getColor(R.color.bc_gray));
-				mTabImgs.get(1).setImageDrawable(
-						getResources().getDrawable(R.drawable.ic_calendar));
-				mTabTexts.get(1).setTextColor(
-						getResources().getColor(R.color.bc_gray));
+				mTabTexts.get(0).setTextColor(getResources().getColor(R.color.bc_gray));
+				mTabImgs.get(1)
+						.setImageDrawable(getResources().getDrawable(R.drawable.ic_calendar));
+				mTabTexts.get(1).setTextColor(getResources().getColor(R.color.bc_gray));
 				mTabImgs.get(2).setImageDrawable(
-						getResources()
-								.getDrawable(R.drawable.ic_important_blue));
-				mTabTexts.get(2).setTextColor(
-						getResources().getColor(R.color.bc_blue));
-				mTabImgs.get(3).setImageDrawable(
-						getResources().getDrawable(R.drawable.ic_more));
-				mTabTexts.get(3).setTextColor(
-						getResources().getColor(R.color.bc_gray));
+						getResources().getDrawable(R.drawable.ic_important_blue));
+				mTabTexts.get(2).setTextColor(getResources().getColor(R.color.bc_blue));
+				mTabImgs.get(3).setImageDrawable(getResources().getDrawable(R.drawable.ic_more));
+				mTabTexts.get(3).setTextColor(getResources().getColor(R.color.bc_gray));
 				break;
 			case 3:
 				mTabImgs.get(0).setImageDrawable(
 						getResources().getDrawable(R.drawable.ic_three_men));
-				mTabTexts.get(0).setTextColor(
-						getResources().getColor(R.color.bc_gray));
-				mTabImgs.get(1).setImageDrawable(
-						getResources().getDrawable(R.drawable.ic_calendar));
-				mTabTexts.get(1).setTextColor(
-						getResources().getColor(R.color.bc_gray));
+				mTabTexts.get(0).setTextColor(getResources().getColor(R.color.bc_gray));
+				mTabImgs.get(1)
+						.setImageDrawable(getResources().getDrawable(R.drawable.ic_calendar));
+				mTabTexts.get(1).setTextColor(getResources().getColor(R.color.bc_gray));
 				mTabImgs.get(2).setImageDrawable(
 						getResources().getDrawable(R.drawable.ic_important));
-				mTabTexts.get(2).setTextColor(
-						getResources().getColor(R.color.bc_gray));
+				mTabTexts.get(2).setTextColor(getResources().getColor(R.color.bc_gray));
 				mTabImgs.get(3).setImageDrawable(
 						getResources().getDrawable(R.drawable.ic_more_blue));
-				mTabTexts.get(3).setTextColor(
-						getResources().getColor(R.color.bc_blue));
+				mTabTexts.get(3).setTextColor(getResources().getColor(R.color.bc_blue));
 			}
-			getSupportFragmentManager().beginTransaction()
-					.hide(mTabFragments.get(0)).hide(mTabFragments.get(1))
-					.hide(mTabFragments.get(2)).hide(mTabFragments.get(3))
-					.show(mTabFragments.get(mPosition)).commit();
+			getSupportFragmentManager().beginTransaction().hide(mTabFragments.get(0))
+					.hide(mTabFragments.get(1)).hide(mTabFragments.get(2))
+					.hide(mTabFragments.get(3)).show(mTabFragments.get(mPosition)).commit();
 			MainActivity.this.mPosition = mPosition;
 		}
 	}

@@ -50,6 +50,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 			+ RecentRecruitmentTable.NUM_OF_PEOPLE
 			+ " integer,"
 			+ RecentRecruitmentTable.DESC + "text);";
+	
+	private static final String CREATE_URL_INDEX_ON_RECENT_RECRUITMENT_TABLE = "create unique index url_idx_recent on "
+			+ RecentRecruitmentTable.TABLE_NAME + "(" + RecentRecruitmentTable.URL + ")";
 
 	private static final String CREATE_ARTICLE_TABLE_SQL = "create table if not exists "
 			+ ArticleTable.TABLE_NAME
@@ -84,7 +87,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_URL_INDEX_ON_NOTIFICATION_TABLE);
 
 		db.execSQL(CREATE_RECENT_RECRUITMENT_TABLE_SQL);
-
+		db.execSQL(CREATE_URL_INDEX_ON_RECENT_RECRUITMENT_TABLE);
+		
 		db.execSQL(CREATE_ARTICLE_TABLE_SQL);
 
 		db.execSQL(CREATE_STARRED_TABLE_SQL);

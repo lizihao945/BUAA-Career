@@ -130,6 +130,11 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 		}
 	}
 
+	/**
+	 * If update failed, a judge should be made to determine whether
+	 * the head should be placed or the footer should be reset.
+	 * @param isHead Refreshing Newer News?
+	 */
 	public void updateFailed(boolean isHead) {
 		Toast.makeText(getActivity(), R.string.refresh_failed, Toast.LENGTH_SHORT).show();
 		if (isHead)
@@ -187,6 +192,12 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 				return;
 			mAdapter.notifyDataSetChanged();
 			super.onPostExecute(result);
+		}
+	}
+
+	public void validate() {
+		if (mListItems.size() == 0) {
+			setRefreshing();
 		}
 	}
 }

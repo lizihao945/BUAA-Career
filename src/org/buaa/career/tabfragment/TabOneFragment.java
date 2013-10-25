@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 public class TabOneFragment extends Fragment {
+	
 	private NewsFragment[] mFragments = new NewsFragment[4];;
 	private TabOneFragmentPagerAdapter mPagerAdapter;
 	private UnderlinePageIndicator mIndicator;
@@ -99,10 +100,11 @@ public class TabOneFragment extends Fragment {
 				mTabs.get(position).setChecked(true);
 				mTabs.get(mPosition).setChecked(false);
 				mPosition = position;
+				mFragments[mPosition].validate();
 			}
 
 			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 			}
 
 			@Override

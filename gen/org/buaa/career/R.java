@@ -1559,12 +1559,13 @@ containing a value of this type.
         public static final int bottom=0x7f090003;
         public static final int bottom_tab_bar=0x7f09004b;
         public static final int calendar_grid=0x7f090059;
-        public static final int calendar_view=0x7f090070;
+        public static final int calendar_view=0x7f090071;
         public static final int category_img=0x7f09005a;
         public static final int container=0x7f090048;
         public static final int disableHome=0x7f09001a;
         public static final int disabled=0x7f090005;
         public static final int edit_query=0x7f090037;
+        public static final int favourite_list=0x7f090070;
         public static final int fl_inner=0x7f090063;
         public static final int flip=0x7f09000d;
         public static final int gridview=0x7f09000e;
@@ -1575,11 +1576,10 @@ containing a value of this type.
         public static final int layout_highest=0x7f090047;
         public static final int list=0x7f09005e;
         public static final int listMode=0x7f090013;
-        public static final int list_view=0x7f090071;
+        public static final int list_view=0x7f090072;
         public static final int main_fragment=0x7f090049;
         public static final int manualOnly=0x7f090009;
         public static final int menu_about=0x7f090073;
-        public static final int menu_settings=0x7f090072;
         public static final int none=0x7f090000;
         public static final int normal=0x7f090012;
         public static final int progressbar=0x7f09005f;
@@ -1678,8 +1678,9 @@ containing a value of this type.
         public static final int tab_four_fragment=0x7f030023;
         public static final int tab_one_fragment=0x7f030024;
         public static final int tab_one_tab=0x7f030025;
-        public static final int tab_two_fragment=0x7f030026;
-        public static final int week=0x7f030027;
+        public static final int tab_three_fragment=0x7f030026;
+        public static final int tab_two_fragment=0x7f030027;
+        public static final int week=0x7f030028;
     }
     public static final class menu {
         public static final int main_activity_menu=0x7f0c0000;

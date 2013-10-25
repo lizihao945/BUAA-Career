@@ -62,7 +62,7 @@ public class DownloadNewsTask extends AsyncTask<Void, Integer, LinkedList<News>>
 
 		try {
 			URLConnection connection = new URL(URL_STRING).openConnection();
-			connection.setConnectTimeout(3000);
+			connection.setConnectTimeout(5000);
 
 			parser.setConnection(connection);
 			parser.setEncoding(Constant.ENCODE);
@@ -107,6 +107,7 @@ public class DownloadNewsTask extends AsyncTask<Void, Integer, LinkedList<News>>
 				// toPlainTextString
 				news.setTitle(node1.toPlainTextString().trim()).setUrl(node1.getLink())
 						.setTime(node2.toPlainTextString().trim()).setChannel(mChannl);
+				// 更新数据库中第一页的内容
 				if (mPageNum == 1)
 					DBTask.addNews(news, mContext);
 				tmp.add(news);
@@ -120,6 +121,7 @@ public class DownloadNewsTask extends AsyncTask<Void, Integer, LinkedList<News>>
 
 	@Override
 	protected void onPostExecute(LinkedList<News> result) {
+		// set a flag to determine if it's loading the first web page
 		boolean flag = mPageNum == 1 ? true : false;
 		if (result == null) {
 			mNewsFragment.updateFailed(flag);

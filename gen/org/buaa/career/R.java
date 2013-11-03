@@ -1514,6 +1514,8 @@ containing a value of this type.
         public static final int vpi__tab_unselected_pressed_holo=0x7f02009f;
     }
     public static final class id {
+        public static final int Notifications=0x7f09006a;
+        public static final int TextView01=0x7f090068;
         public static final int abs__action_bar=0x7f090031;
         public static final int abs__action_bar_container=0x7f090030;
         public static final int abs__action_bar_subtitle=0x7f090022;
@@ -1559,13 +1561,13 @@ containing a value of this type.
         public static final int bottom=0x7f090003;
         public static final int bottom_tab_bar=0x7f09004b;
         public static final int calendar_grid=0x7f090059;
-        public static final int calendar_view=0x7f090071;
+        public static final int calendar_view=0x7f090075;
         public static final int category_img=0x7f09005a;
         public static final int container=0x7f090048;
         public static final int disableHome=0x7f09001a;
         public static final int disabled=0x7f090005;
         public static final int edit_query=0x7f090037;
-        public static final int favourite_list=0x7f090070;
+        public static final int favourite_list=0x7f090074;
         public static final int fl_inner=0x7f090063;
         public static final int flip=0x7f09000d;
         public static final int gridview=0x7f09000e;
@@ -1576,10 +1578,12 @@ containing a value of this type.
         public static final int layout_highest=0x7f090047;
         public static final int list=0x7f09005e;
         public static final int listMode=0x7f090013;
-        public static final int list_view=0x7f090072;
+        public static final int list_view=0x7f090076;
+        public static final int listview1=0x7f090069;
+        public static final int listview2=0x7f09006b;
         public static final int main_fragment=0x7f090049;
         public static final int manualOnly=0x7f090009;
-        public static final int menu_about=0x7f090073;
+        public static final int menu_about=0x7f090077;
         public static final int none=0x7f090000;
         public static final int normal=0x7f090012;
         public static final int progressbar=0x7f09005f;
@@ -1603,14 +1607,14 @@ containing a value of this type.
         public static final int tab_four_text=0x7f090057;
         public static final int tab_one=0x7f09004c;
         public static final int tab_one_img=0x7f09004d;
-        public static final int tab_one_pager=0x7f09006e;
-        public static final int tab_one_tab_bar=0x7f090068;
-        public static final int tab_one_tab_four=0x7f09006c;
-        public static final int tab_one_tab_indicator=0x7f09006d;
-        public static final int tab_one_tab_one=0x7f090069;
-        public static final int tab_one_tab_text=0x7f09006f;
-        public static final int tab_one_tab_three=0x7f09006b;
-        public static final int tab_one_tab_two=0x7f09006a;
+        public static final int tab_one_pager=0x7f090072;
+        public static final int tab_one_tab_bar=0x7f09006c;
+        public static final int tab_one_tab_four=0x7f090070;
+        public static final int tab_one_tab_indicator=0x7f090071;
+        public static final int tab_one_tab_one=0x7f09006d;
+        public static final int tab_one_tab_text=0x7f090073;
+        public static final int tab_one_tab_three=0x7f09006f;
+        public static final int tab_one_tab_two=0x7f09006e;
         public static final int tab_one_text=0x7f09004e;
         public static final int tab_three=0x7f090052;
         public static final int tab_three_img=0x7f090053;

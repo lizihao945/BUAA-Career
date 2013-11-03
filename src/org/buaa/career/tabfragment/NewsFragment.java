@@ -70,7 +70,7 @@ public class NewsFragment extends PullToRefreshListFragment implements OnRefresh
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		setEmptyText("请下拉刷新...");
+		setEmptyText(getString(R.string.pull_to_refresh));
 		mListView = getPullToRefreshListView();
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 

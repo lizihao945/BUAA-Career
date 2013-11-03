@@ -1734,6 +1734,7 @@ containing a value of this type.
         public static final int day_name_format=0x7f070000;
         public static final int invalid_date=0x7f070001;
         public static final int month_name_format=0x7f070002;
+        public static final int pull_to_refresh=0x7f070020;
         /**  Just use standard Pull Down String when pulling up. These can be set for languages which require it 
  Just use standard Pull Down String when pulling up. These can be set for languages which require it 
          */
@@ -1743,14 +1744,14 @@ containing a value of this type.
         public static final int pull_to_refresh_pull_label=0x7f070003;
         public static final int pull_to_refresh_refreshing_label=0x7f070005;
         public static final int pull_to_refresh_release_label=0x7f070004;
-        public static final int refresh_failed=0x7f070022;
-        public static final int refresh_failed_footer=0x7f070023;
-        public static final int refreshing=0x7f070021;
+        public static final int refresh_failed=0x7f070023;
+        public static final int refresh_failed_footer=0x7f070024;
+        public static final int refreshing=0x7f070022;
         public static final int tab_calendar=0x7f07001d;
         public static final int tab_favourite=0x7f07001e;
         public static final int tab_more=0x7f07001f;
         public static final int tab_notification=0x7f07001c;
-        public static final int touch_to_refresh=0x7f070020;
+        public static final int touch_to_refresh=0x7f070021;
     }
     public static final class style {
         /** 

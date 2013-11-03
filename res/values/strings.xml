@@ -11,6 +11,7 @@
     <string name="tab_calendar">就业日历</string>
     <string name="tab_favourite">我的收藏</string>
     <string name="tab_more">更多</string>
+    <string name="pull_to_refresh">请下拉加载内容...</string>
     <string name="touch_to_refresh">点击加载更多...</string>
 	<string name="refreshing">正在加载...</string>
 	<string name="refresh_failed">加载失败，请检查网络连接</string>

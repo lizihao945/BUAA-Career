@@ -24,6 +24,6 @@ public class TabFourFragment extends Fragment {
 		data.add("联系我们");
 		ListView listView1 = (ListView) view.findViewById(R.id.listview1);
 		listView1.setAdapter(new ArrayAdapter<String>(getActivity(),  android.R.layout.simple_list_item_1, data));
-		return super.onCreateView(inflater, container, savedInstanceState);
+		return view;
 	}
 }

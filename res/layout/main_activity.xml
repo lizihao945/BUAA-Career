@@ -24,9 +24,17 @@
                     android:id="@+id/tab_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_above="@+id/bottom_tab_bar"
+                    android:layout_above="@+id/bottom_tab_bar_divider"
                     android:layout_gravity="center" >
                 </FrameLayout>
+
+                <View
+                    android:id="@+id/bottom_tab_bar_divider"
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:layout_above="@+id/bottom_tab_bar"
+                    android:layout_centerVertical="true"
+                    android:background="?android:attr/listDivider" />
 
                 <LinearLayout
                     android:id="@+id/bottom_tab_bar"

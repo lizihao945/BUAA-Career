@@ -16,145 +16,140 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <RelativeLayout
+            <FrameLayout
+                android:id="@+id/tab_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                android:layout_above="@+id/bottom_tab_bar_divider"
+                android:layout_gravity="center" >
+            </FrameLayout>
 
-                <FrameLayout
-                    android:id="@+id/tab_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/bottom_tab_bar_divider"
-                    android:layout_gravity="center" >
-                </FrameLayout>
+            <View
+                android:id="@+id/bottom_tab_bar_divider"
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_above="@+id/bottom_tab_bar"
+                android:layout_centerVertical="true"
+                android:background="?android:attr/listDivider" />
 
-                <View
-                    android:id="@+id/bottom_tab_bar_divider"
-                    android:layout_width="fill_parent"
-                    android:layout_height="2dp"
-                    android:layout_above="@+id/bottom_tab_bar"
-                    android:layout_centerVertical="true"
-                    android:background="?android:attr/listDivider" />
+            <LinearLayout
+                android:id="@+id/bottom_tab_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@color/white"
+                android:baselineAligned="false"
+                android:paddingBottom="1dp"
+                android:paddingTop="1dp" >
 
                 <LinearLayout
-                    android:id="@+id/bottom_tab_bar"
-                    android:layout_width="match_parent"
+                    android:id="@+id/tab_one"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/white"
-                    android:baselineAligned="false"
-                    android:paddingBottom="1dp"
-                    android:paddingTop="1dp" >
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical" >
 
-                    <LinearLayout
-                        android:id="@+id/tab_one"
+                    <ImageView
+                        android:id="@+id/tab_one_img"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical" >
+                        android:clickable="false"
+                        android:focusable="true"
+                        android:src="@drawable/ic_three_men_blue" />
 
-                        <ImageView
-                            android:id="@+id/tab_one_img"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:focusable="true"
-                            android:src="@drawable/ic_three_men_blue" />
-
-                        <TextView
-                            android:id="@+id/tab_one_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:text="@string/tab_notification"
-                            android:textColor="@color/bc_blue"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/tab_two"
+                    <TextView
+                        android:id="@+id/tab_one_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical" >
-
-                        <ImageView
-                            android:id="@+id/tab_two_img"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:scaleType="matrix"
-                            android:src="@drawable/ic_calendar" />
-
-                        <TextView
-                            android:id="@+id/tab_two_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:text="@string/tab_calendar"
-                            android:textColor="@color/bc_gray"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/tab_three"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical" >
-
-                        <ImageView
-                            android:id="@+id/tab_three_img"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:scaleType="matrix"
-                            android:src="@drawable/ic_important" />
-
-                        <TextView
-                            android:id="@+id/tab_three_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:text="@string/tab_favourite"
-                            android:textColor="@color/bc_gray"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/tab_four"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical" >
-
-                        <ImageView
-                            android:id="@+id/tab_four_img"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:scaleType="matrix"
-                            android:src="@drawable/ic_more" />
-
-                        <TextView
-                            android:id="@+id/tab_four_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:text="@string/tab_more"
-                            android:textColor="@color/bc_gray"
-                            android:textSize="12sp" />
-                    </LinearLayout>
+                        android:clickable="false"
+                        android:text="@string/tab_recruitment"
+                        android:textColor="@color/bc_blue"
+                        android:textSize="12sp" />
                 </LinearLayout>
-            </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:id="@+id/tab_two_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:scaleType="matrix"
+                        android:src="@drawable/ic_notification" />
+
+                    <TextView
+                        android:id="@+id/tab_two_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:text="@string/tab_notification"
+                        android:textColor="@color/bc_gray"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab_three"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:id="@+id/tab_three_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:scaleType="matrix"
+                        android:src="@drawable/ic_important" />
+
+                    <TextView
+                        android:id="@+id/tab_three_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:text="@string/tab_favourite"
+                        android:textColor="@color/bc_gray"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab_four"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:id="@+id/tab_four_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:scaleType="matrix"
+                        android:src="@drawable/ic_more" />
+
+                    <TextView
+                        android:id="@+id/tab_four_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:text="@string/tab_more"
+                        android:textColor="@color/bc_gray"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
         </RelativeLayout>
     </FrameLayout>
 

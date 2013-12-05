@@ -17,6 +17,8 @@ import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.filters.HasParentFilter;
 import org.htmlparser.filters.OrFilter;
 import org.htmlparser.filters.TagNameFilter;
+import org.htmlparser.lexer.Page;
+import org.htmlparser.tags.Div;
 import org.htmlparser.util.NodeIterator;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
@@ -28,6 +30,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
@@ -45,6 +48,7 @@ public class ArticleActivity extends SherlockActivity {
 	private String mUrl;
 	private ActionBar mActionBar;
 	private CheckableFrameLayout mAddToFavourite;
+	private Node titleNode;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +62,7 @@ public class ArticleActivity extends SherlockActivity {
 
 		mFileName = mChannel + "_" + mPosition + ".html";
 		mFilePath = "file://" + getFilesDir().getAbsolutePath() + "/" + mFileName;
-
+		
 		mWebView = (WebView) findViewById(R.id.web_view);
 		mWebView.getSettings().setDefaultTextEncodingName(Constant.ENCODE);
 
@@ -146,7 +150,7 @@ public class ArticleActivity extends SherlockActivity {
 						new HasAttributeFilter("cellspacing", "0"),
 						new HasAttributeFilter("width", "939"), new HasAttributeFilter("id", "__") };
 				highestFilter.setPredicates(filters);
-
+				
 				// get the div in the table
 				AndFilter andFilter01 = new AndFilter(new TagNameFilter("div"),
 						new HasAttributeFilter("style", "width: 100%"));
@@ -159,6 +163,15 @@ public class ArticleActivity extends SherlockActivity {
 						new HasParentFilter(highestFilter, true));
 				for (NodeIterator e = parser.elements(); e.hasMoreNodes();)
 					e.nextNode().collectInto(divNodes, filter2);
+				
+				// get the title div
+				NodeList title = new NodeList();
+				HasAttributeFilter titleFilter = new HasAttributeFilter("class", "ctitle ctitle1");
+				for (NodeIterator e = divNodes.elements(); e.hasMoreNodes();)
+					e.nextNode().collectInto(title, titleFilter);
+				Div div = (Div) title.elementAt(0);
+				div.setAttribute("style", "font-size:25px");
+				
 				return divNodes.elementAt(0);
 			} catch (ParserException e1) {
 				// TODO Auto-generated catch block
@@ -173,7 +186,6 @@ public class ArticleActivity extends SherlockActivity {
 
 		@Override
 		protected void onPostExecute(Node result) {
-
 			try {
 				FileOutputStream outputStream = openFileOutput(mFileName, Context.MODE_PRIVATE);
 				outputStream.write(result.toHtml().getBytes(Constant.ENCODE));

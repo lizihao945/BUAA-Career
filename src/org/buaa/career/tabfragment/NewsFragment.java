@@ -40,7 +40,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 public class NewsFragment extends PullToRefreshListFragment implements OnRefreshListener<ListView>,
 		Scrollable {
 
-	private int mChannel;
+	protected int mChannel;
 	private OnHeadlineSelectedListener mCallBack;
 	private LinkedList<News> mListItems;
 	private SimpleAdapter mAdapter = null;

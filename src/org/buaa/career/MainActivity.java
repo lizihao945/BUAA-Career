@@ -6,9 +6,9 @@ import java.util.List;
 import org.buaa.career.data.model.News;
 import org.buaa.career.tabfragment.NewsFragment.OnHeadlineSelectedListener;
 import org.buaa.career.tabfragment.TabFourFragment;
-import org.buaa.career.tabfragment.TabOneFragment;
-import org.buaa.career.tabfragment.TabThreeFragment;
 import org.buaa.career.tabfragment.TabTwoFragment;
+import org.buaa.career.tabfragment.TabThreeFragment;
+import org.buaa.career.tabfragment.TabOneFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -126,10 +126,12 @@ public class MainActivity extends SherlockFragmentActivity implements
 		@Override
 		public void onClick(View v) {
 			if (MainActivity.this.mPosition == mPosition) {
-				if (mTabFragments.get(mPosition) instanceof TabOneFragment) {
-					((TabOneFragment) mTabFragments.get(mPosition))
+				if (mTabFragments.get(mPosition) instanceof TabTwoFragment) {
+					((TabTwoFragment) mTabFragments.get(mPosition))
 							.refreshCurrTab();
 					return;
+				} else if (mTabFragments.get(mPosition) instanceof TabThreeFragment) {
+					((TabThreeFragment) mTabFragments.get(mPosition)).refresh();
 				}
 			}
 			switch (mPosition) {
@@ -140,7 +142,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 				mTabTexts.get(0).setTextColor(
 						getResources().getColor(R.color.bc_blue));
 				mTabImgs.get(1).setImageDrawable(
-						getResources().getDrawable(R.drawable.ic_calendar));
+						getResources().getDrawable(R.drawable.ic_notification));
 				mTabTexts.get(1).setTextColor(
 						getResources().getColor(R.color.bc_gray));
 				mTabImgs.get(2).setImageDrawable(
@@ -160,7 +162,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 				mTabImgs.get(1)
 						.setImageDrawable(
 								getResources().getDrawable(
-										R.drawable.ic_calendar_blue));
+										R.drawable.ic_notification_blue));
 				mTabTexts.get(1).setTextColor(
 						getResources().getColor(R.color.bc_blue));
 				mTabImgs.get(2).setImageDrawable(
@@ -178,7 +180,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 				mTabTexts.get(0).setTextColor(
 						getResources().getColor(R.color.bc_gray));
 				mTabImgs.get(1).setImageDrawable(
-						getResources().getDrawable(R.drawable.ic_calendar));
+						getResources().getDrawable(R.drawable.ic_notification));
 				mTabTexts.get(1).setTextColor(
 						getResources().getColor(R.color.bc_gray));
 				mTabImgs.get(2).setImageDrawable(
@@ -197,7 +199,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 				mTabTexts.get(0).setTextColor(
 						getResources().getColor(R.color.bc_gray));
 				mTabImgs.get(1).setImageDrawable(
-						getResources().getDrawable(R.drawable.ic_calendar));
+						getResources().getDrawable(R.drawable.ic_notification));
 				mTabTexts.get(1).setTextColor(
 						getResources().getColor(R.color.bc_gray));
 				mTabImgs.get(2).setImageDrawable(

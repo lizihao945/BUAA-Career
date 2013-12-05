@@ -1,92 +1,170 @@
 package org.buaa.career.tabfragment;
 
-import java.sql.Date;
-import java.util.Calendar;
-import java.util.LinkedList;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.buaa.career.R;
-import org.buaa.career.data.db.DBTask;
 import org.buaa.career.data.model.News;
-import org.buaa.career.trifle.HeadlineAdapter;
+import org.buaa.career.view.widget.CheckableRelativeLayout;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.TextView;
 
-import com.squareup.timessquare.CalendarPickerView;
-import com.squareup.timessquare.CalendarPickerView.OnDateSelectedListener;
-import com.squareup.timessquare.CalendarPickerView.SelectionMode;
+import com.viewpagerindicator.UnderlinePageIndicator;
 
 public class TabTwoFragment extends Fragment {
-	private CalendarPickerView mCalendarPickerView;
-	private ListView mListView;
-	private HeadlineAdapter mAdapter;
-	private LinkedList<News> mListItems;
+	
+	private NewsFragment[] mFragments = new NewsFragment[3];
+	private TabOneFragmentPagerAdapter mPagerAdapter;
+	private UnderlinePageIndicator mIndicator;
+	private ViewPager mViewPager;
+	private int mPosition;
+	private List<CheckableRelativeLayout> mTabs;
+	private View mFooterView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mListItems = new LinkedList<News>();
-		new LoadDBDataTask(new Date(new java.util.Date().getTime())).execute();
+		mPagerAdapter = new TabOneFragmentPagerAdapter(getChildFragmentManager());
+
+		Bundle args;
+		mFragments[0] = new NewsFragment();
+		args = new Bundle();
+		args.putInt("channel", News.NOTIFICATION);
+		mFragments[0].setArguments(args);
+		mFragments[1] = new NewsFragment();
+		args = new Bundle();
+		args.putInt("channel", News.CENTER_RECRUITMENT);
+		mFragments[1].setArguments(args);
+		mFragments[2] = new NewsFragment();
+		args = new Bundle();
+		args.putInt("channel", News.WORKING_RECRUITMENT);
+		mFragments[2].setArguments(args);
 
 		setRetainInstance(true);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.tab_two_fragment, container, false);
-		final Calendar startTime = Calendar.getInstance();
-		startTime.add(Calendar.MONTH, -3);
-		final Calendar endTime = Calendar.getInstance();
-		endTime.add(Calendar.MONTH, 3);
-		mAdapter = new HeadlineAdapter(getActivity(), mListItems, R.layout.news_item, new String[] {
-				"title", "time" }, new int[] { R.id.headline_title_text, R.id.headline_desc_text });
+		final View view = inflater.inflate(R.layout.tab_one_fragment, container, false);
 
-		mListView = (ListView) view.findViewById(R.id.list_view);
-		mListView.setAdapter(mAdapter);
-		mListView.setEnabled(true);
+		// get reference of the category tabs in the tab bar
+		mTabs = new ArrayList<CheckableRelativeLayout>();
+		mTabs.add((CheckableRelativeLayout) view.findViewById(R.id.tab_one_tab_one));
+		mTabs.add((CheckableRelativeLayout) view.findViewById(R.id.tab_one_tab_two));
+		mTabs.add((CheckableRelativeLayout) view.findViewById(R.id.tab_one_tab_three));
 
-		mCalendarPickerView = (CalendarPickerView) view.findViewById(R.id.calendar_view);
-		mCalendarPickerView.setOnDateSelectedListener(new OnDateSelectedListener() {
+		for (int i = 0; i < 3; i++)
+			mTabs.get(i).setOnClickListener(new TabOnClickListener(i));
+
+		// display the first category by default
+		mTabs.get(0).setChecked(true);
+
+		// initialize the category tabs in the tab bar
+		((TextView) mTabs.get(0).findViewById(R.id.tab_one_tab_text)).setText(getResources()
+				.getString(R.string.category_importent_notification));
+		((TextView) mTabs.get(1).findViewById(R.id.tab_one_tab_text)).setText(getResources()
+				.getString(R.string.category_center_info));
+		((TextView) mTabs.get(2).findViewById(R.id.tab_one_tab_text)).setText(getResources()
+				.getString(R.string.category_workplace_info));
+
+		mViewPager = (ViewPager) view.findViewById(R.id.tab_one_pager);
+		mViewPager.setAdapter(mPagerAdapter);
+
+		mIndicator = (UnderlinePageIndicator) view.findViewById(R.id.tab_one_tab_indicator);
+		mIndicator.setViewPager(mViewPager);
+		mIndicator.setFades(false);
+		mIndicator.setSelectedColor(getResources().getColor(R.color.bc_blue));
+		mIndicator.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
-			public void onDateSelected(java.util.Date date) {
-				new LoadDBDataTask(new Date(mCalendarPickerView.getSelectedDate().getTime()))
-						.execute();
+			public void onPageSelected(int position) {
+				mTabs.get(position).setChecked(true);
+				mTabs.get(mPosition).setChecked(false);
+				mPosition = position;
+				mFragments[mPosition].validate();
+			}
+
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
 			}
 		});
-		mCalendarPickerView.init(startTime.getTime(), endTime.getTime())
-		.inMode(SelectionMode.SINGLE)
-		.withSelectedDate(new java.util.Date());
-		
+
+		// display the first category by default
+		mIndicator.setCurrentItem(0);
+		mPosition = 0;
+
 		return view;
 	}
 
-	private class LoadDBDataTask extends AsyncTask<Void, Integer, LinkedList<News>> {
-		Date mDate;
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		// Basically, the child FragmentManager ends up with a broken internal state when it is
+		// detached from the activity.
+		try {
+			Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+			childFragmentManager.setAccessible(true);
+			childFragmentManager.set(this, null);
 
-		public LoadDBDataTask(Date date) {
-			mDate = date;
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private class TabOnClickListener implements OnClickListener {
+		private int mPosition;
+
+		private TabOnClickListener(int position) {
+			mPosition = position;
 		}
 
 		@Override
-		protected LinkedList<News> doInBackground(Void... params) {
-			mListItems.clear();
-			mListItems.addAll(DBTask.getNewsByDate(mDate, getActivity()));
-			return null;
+		public void onClick(View v) {
+			if (mPosition != TabTwoFragment.this.mPosition)
+				mIndicator.setCurrentItem(mPosition);
+		}
+
+	}
+
+	public class TabOneFragmentPagerAdapter extends FragmentPagerAdapter {
+		public TabOneFragmentPagerAdapter(FragmentManager fm) {
+			super(fm);
 		}
 
 		@Override
-		protected void onPostExecute(LinkedList<News> result) {
-			if (mAdapter == null)
-				return;
-			mAdapter.notifyDataSetChanged();
-			super.onPostExecute(result);
+		public Fragment getItem(int arg0) {
+			return mFragments[arg0];
 		}
+
+		@Override
+		public int getCount() {
+			return mFragments.length;
+		}
+	}
+
+	public int getPosition() {
+		return mPosition;
+	}
+
+	public void refreshCurrTab() {
+		mFragments[mPosition].setRefreshing();
 	}
 }

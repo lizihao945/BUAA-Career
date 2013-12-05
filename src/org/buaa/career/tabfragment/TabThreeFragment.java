@@ -23,6 +23,13 @@ public class TabThreeFragment extends Fragment {
 	HeadlineAdapter mAdapter = null;
 	private LinkedList<News> mListItems;
 
+	/**
+	 * refresh the favorite list
+	 */
+	public void refresh() {
+		new LoadDBDataTask().execute();
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.tab_three_fragment, container, false);

@@ -28,9 +28,6 @@
                 android:id="@+id/tab_one_tab_three"
                 layout="@layout/tab_one_tab" />
 
-            <include
-                android:id="@+id/tab_one_tab_four"
-                layout="@layout/tab_one_tab" />
         </LinearLayout>
 
         <com.viewpagerindicator.UnderlinePageIndicator

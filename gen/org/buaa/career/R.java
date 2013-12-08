@@ -1513,8 +1513,6 @@ containing a value of this type.
         public static final int vpi__tab_unselected_pressed_holo=0x7f02009e;
     }
     public static final class id {
-        public static final int Notifications=0x7f09006c;
-        public static final int TextView01=0x7f09006a;
         public static final int abs__action_bar=0x7f090031;
         public static final int abs__action_bar_container=0x7f090030;
         public static final int abs__action_bar_subtitle=0x7f090022;
@@ -1555,20 +1553,18 @@ containing a value of this type.
         public static final int abs__title=0x7f09002c;
         public static final int abs__up=0x7f09001c;
         public static final int add_to_favourite=0x7f090046;
-        public static final int article_header=0x7f090044;
         public static final int article_highest=0x7f090043;
         public static final int both=0x7f090003;
         public static final int bottom=0x7f09000f;
         public static final int bottom_tab_bar=0x7f09004d;
         public static final int bottom_tab_bar_divider=0x7f09004c;
         public static final int calendar_grid=0x7f09005b;
-        public static final int calendar_view=0x7f090076;
         public static final int category_img=0x7f09005c;
         public static final int container=0x7f090049;
         public static final int disableHome=0x7f09001a;
         public static final int disabled=0x7f090000;
         public static final int edit_query=0x7f090037;
-        public static final int favourite_list=0x7f090075;
+        public static final int favourite_list=0x7f09006c;
         public static final int fl_inner=0x7f090065;
         public static final int flip=0x7f090008;
         public static final int gridview=0x7f090009;
@@ -1579,9 +1575,8 @@ containing a value of this type.
         public static final int layout_highest=0x7f090048;
         public static final int list=0x7f090060;
         public static final int listMode=0x7f090013;
-        public static final int list_view=0x7f090077;
-        public static final int listview1=0x7f09006b;
-        public static final int listview2=0x7f09006d;
+        public static final int listview1=0x7f09006a;
+        public static final int loading_text=0x7f090044;
         public static final int main_fragment=0x7f09004a;
         public static final int manualOnly=0x7f090004;
         public static final int none=0x7f09000c;
@@ -1607,13 +1602,13 @@ containing a value of this type.
         public static final int tab_four_text=0x7f090059;
         public static final int tab_one=0x7f09004e;
         public static final int tab_one_img=0x7f09004f;
-        public static final int tab_one_pager=0x7f090073;
-        public static final int tab_one_tab_bar=0x7f09006e;
-        public static final int tab_one_tab_indicator=0x7f090072;
-        public static final int tab_one_tab_one=0x7f09006f;
-        public static final int tab_one_tab_text=0x7f090074;
-        public static final int tab_one_tab_three=0x7f090071;
-        public static final int tab_one_tab_two=0x7f090070;
+        public static final int tab_one_pager=0x7f090072;
+        public static final int tab_one_tab_bar=0x7f09006d;
+        public static final int tab_one_tab_indicator=0x7f090071;
+        public static final int tab_one_tab_one=0x7f09006e;
+        public static final int tab_one_tab_text=0x7f09006b;
+        public static final int tab_one_tab_three=0x7f090070;
+        public static final int tab_one_tab_two=0x7f09006f;
         public static final int tab_one_text=0x7f090050;
         public static final int tab_three=0x7f090054;
         public static final int tab_three_img=0x7f090055;
@@ -1679,11 +1674,10 @@ containing a value of this type.
         public static final int sherlock_spinner_item=0x7f030021;
         public static final int startup_loading=0x7f030022;
         public static final int tab_four_fragment=0x7f030023;
-        public static final int tab_one_fragment=0x7f030024;
-        public static final int tab_one_tab=0x7f030025;
-        public static final int tab_three_fragment=0x7f030026;
-        public static final int tab_two_fragment=0x7f030027;
-        public static final int week=0x7f030028;
+        public static final int tab_one_tab=0x7f030024;
+        public static final int tab_three_fragment=0x7f030025;
+        public static final int tab_two_fragment=0x7f030026;
+        public static final int week=0x7f030027;
     }
     public static final class menu {
         public static final int main_activity_menu=0x7f0c0000;
@@ -1735,6 +1729,8 @@ containing a value of this type.
         public static final int category_workplace_info=0x7f07001a;
         public static final int day_name_format=0x7f070000;
         public static final int invalid_date=0x7f070001;
+        public static final int loading=0x7f070026;
+        public static final int loading_failed=0x7f070027;
         public static final int month_name_format=0x7f070002;
         public static final int pull_to_refresh=0x7f07001f;
         /**  Just use standard Pull Down String when pulling up. These can be set for languages which require it 
@@ -1753,6 +1749,8 @@ containing a value of this type.
         public static final int tab_more=0x7f07001e;
         public static final int tab_notification=0x7f07001c;
         public static final int tab_recruitment=0x7f07001b;
+        public static final int tobecontinued1=0x7f070024;
+        public static final int tobecontinued2=0x7f070025;
         public static final int touch_to_refresh=0x7f070020;
     }
     public static final class style {

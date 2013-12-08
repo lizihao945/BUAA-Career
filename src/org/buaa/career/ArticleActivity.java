@@ -1,10 +1,9 @@
 package org.buaa.career;
 
-import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLConnection;
 
 import org.buaa.career.data.db.DBTask;
 import org.buaa.career.trifle.Constant;
@@ -17,13 +16,16 @@ import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.filters.HasParentFilter;
 import org.htmlparser.filters.OrFilter;
 import org.htmlparser.filters.TagNameFilter;
-import org.htmlparser.lexer.Page;
 import org.htmlparser.tags.Div;
 import org.htmlparser.util.NodeIterator;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +33,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
@@ -45,10 +48,12 @@ public class ArticleActivity extends SherlockActivity {
 	private int mChannel;
 	private int mPosition;
 	private WebView mWebView;
+	private TextView mTextView;
 	private String mUrl;
+	private String mTitle;
+	private String mTime;
 	private ActionBar mActionBar;
 	private CheckableFrameLayout mAddToFavourite;
-	private Node titleNode;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,27 +63,21 @@ public class ArticleActivity extends SherlockActivity {
 		Bundle args = getIntent().getExtras();
 		mChannel = args.getInt("channel");
 		mPosition = args.getInt("position");
+		mTitle = args.getString("title");
 		mUrl = args.getString("url");
+		mTime = args.getString("time");
 
 		mFileName = mChannel + "_" + mPosition + ".html";
-		mFilePath = "file://" + getFilesDir().getAbsolutePath() + "/" + mFileName;
-		
+		mFilePath = "file://" + getFilesDir().getAbsolutePath() + "/"
+				+ mFileName;
+
 		mWebView = (WebView) findViewById(R.id.web_view);
 		mWebView.getSettings().setDefaultTextEncodingName(Constant.ENCODE);
 
-		File[] files = getFilesDir().listFiles(new FilenameFilter() {
+		mTextView = (TextView) findViewById(R.id.loading_text);
 
-			@Override
-			public boolean accept(File dir, String filename) {
-				if (filename.equals(mFileName))
-					return true;
-				return false;
-			}
-		});
-		if (files.length != 0 && files[0].exists())
-			mWebView.loadUrl(mFilePath);
-		else
-			new DownloadArticleTask().execute();
+		mWebView.setVisibility(View.INVISIBLE);
+		new DownloadArticleTask().execute();
 
 	}
 
@@ -92,8 +91,12 @@ public class ArticleActivity extends SherlockActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.addSubMenu(0, 0, 0, "用浏览器打开");
+		menu.addSubMenu(0, 1, 1, "复制网页地址");
+
 		mActionBar = getSupportActionBar();
-		mActionBar.setBackgroundDrawable(getResources().getDrawable(R.color.bc_blue));
+		mActionBar.setBackgroundDrawable(getResources().getDrawable(
+				R.color.bc_blue));
 		mActionBar.setCustomView(R.layout.article_activity_action_bar);
 		mActionBar.setDisplayShowCustomEnabled(true);
 		mActionBar.setHomeButtonEnabled(true);
@@ -106,11 +109,17 @@ public class ArticleActivity extends SherlockActivity {
 
 			@Override
 			public void onClick(View v) {
-				if (mAddToFavourite.isChecked())
-					DBTask.removeStarredNews(mUrl, mChannel, ArticleActivity.this);
-				else {
+				if (mAddToFavourite.isChecked()) {
+					DBTask.removeStarredNews(mUrl, mChannel,
+							ArticleActivity.this);
+					Toast.makeText(getApplicationContext(), "已从收藏取消",
+							Toast.LENGTH_SHORT).show();
+				} else {
 					Log.v(TAG, "article in channel: " + mChannel);
-					DBTask.addStarrdNews(mUrl, mChannel, ArticleActivity.this);
+					DBTask.addStarrdNews(mUrl, mTitle, mTime,
+							ArticleActivity.this);
+					Toast.makeText(getApplicationContext(), "已添加到收藏",
+							Toast.LENGTH_SHORT).show();
 				}
 
 				mAddToFavourite.toggle();
@@ -121,6 +130,20 @@ public class ArticleActivity extends SherlockActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == 0) {
+			Intent intent = new Intent();
+			intent.setAction("android.intent.action.VIEW");
+			Uri content_url = Uri.parse(mUrl);
+			intent.setData(content_url);
+			startActivity(intent);
+			return true;
+		}
+		if (item.getItemId() == 1) {
+			ClipboardManager clip = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+			clip.setPrimaryClip(ClipData.newPlainText("url", mUrl)); 
+			Toast.makeText(this, "网址已复制到剪贴板", Toast.LENGTH_SHORT).show();
+			return true;
+		}
 		if (item.getItemId() == android.R.id.home) {
 			finish();
 			return true;
@@ -138,7 +161,9 @@ public class ArticleActivity extends SherlockActivity {
 			Parser parser = new Parser();
 
 			try {
-				parser.setConnection(new URL(mUrl).openConnection());
+				URLConnection connection = new URL(mUrl).openConnection();
+				connection.setConnectTimeout(5000);
+				parser.setConnection(connection);
 				parser.setEncoding(Constant.ENCODE);
 
 				// get the tables
@@ -148,9 +173,10 @@ public class ArticleActivity extends SherlockActivity {
 						new HasAttributeFilter("align", "center"),
 						new HasAttributeFilter("cellpadding", "0"),
 						new HasAttributeFilter("cellspacing", "0"),
-						new HasAttributeFilter("width", "939"), new HasAttributeFilter("id", "__") };
+						new HasAttributeFilter("width", "939"),
+						new HasAttributeFilter("id", "__") };
 				highestFilter.setPredicates(filters);
-				
+
 				// get the div in the table
 				AndFilter andFilter01 = new AndFilter(new TagNameFilter("div"),
 						new HasAttributeFilter("style", "width: 100%"));
@@ -163,15 +189,16 @@ public class ArticleActivity extends SherlockActivity {
 						new HasParentFilter(highestFilter, true));
 				for (NodeIterator e = parser.elements(); e.hasMoreNodes();)
 					e.nextNode().collectInto(divNodes, filter2);
-				
+
 				// get the title div
 				NodeList title = new NodeList();
-				HasAttributeFilter titleFilter = new HasAttributeFilter("class", "ctitle ctitle1");
+				HasAttributeFilter titleFilter = new HasAttributeFilter(
+						"class", "ctitle ctitle1");
 				for (NodeIterator e = divNodes.elements(); e.hasMoreNodes();)
 					e.nextNode().collectInto(title, titleFilter);
 				Div div = (Div) title.elementAt(0);
 				div.setAttribute("style", "font-size:25px");
-				
+
 				return divNodes.elementAt(0);
 			} catch (ParserException e1) {
 				// TODO Auto-generated catch block
@@ -186,14 +213,20 @@ public class ArticleActivity extends SherlockActivity {
 
 		@Override
 		protected void onPostExecute(Node result) {
+			if (result == null) {
+				mTextView.setText(getString(R.string.loading_failed));
+				return;
+			}
 			try {
-				FileOutputStream outputStream = openFileOutput(mFileName, Context.MODE_PRIVATE);
+				FileOutputStream outputStream = openFileOutput(mFileName,
+						Context.MODE_PRIVATE);
 				outputStream.write(result.toHtml().getBytes(Constant.ENCODE));
 				outputStream.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			mWebView.loadUrl(mFilePath);
+			mWebView.setVisibility(View.VISIBLE);
 			super.onPostExecute(result);
 		}
 	}

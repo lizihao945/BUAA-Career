@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.buaa.career.data.db.table.ArticleTable;
+import org.buaa.career.data.db.table.CenterRecruitmentTable;
 import org.buaa.career.data.db.table.NotificationTable;
 import org.buaa.career.data.db.table.RecentRecruitmentTable;
 import org.buaa.career.data.db.table.StarredTable;
+import org.buaa.career.data.db.table.WorkingRecruitmentTable;
 import org.buaa.career.data.model.News;
 
 import android.content.ContentValues;
@@ -111,39 +113,16 @@ public class DBTask {
 	public static ArrayList<News> getFavouriteNews(Context context) {
 		ArrayList<News> rt = new ArrayList<News>();
 		String sql = "select * from " + StarredTable.TABLE_NAME;
-
 		Cursor c = DataBaseHelper.getInstance(context).getReadableDatabase().rawQuery(sql, null);
-		int categoryColumnIndex = c.getColumnIndex(StarredTable.CATEGORY);
-		int urlColumnIndex = c.getColumnIndex(StarredTable.URL);
+		int titleColumnIndex = c.getColumnIndex(RecentRecruitmentTable.TITLE);
+		int timeColumnIndex = c.getColumnIndex(RecentRecruitmentTable.TIME);
+		int urlColumnIndex = c.getColumnIndex(RecentRecruitmentTable.URL);
 		while (c.moveToNext()) {
-			String url = c.getString(urlColumnIndex);
-			switch (c.getInt(categoryColumnIndex)) {
-			case News.NOTIFICATION:
-				String subSql = "select * from " + NotificationTable.TABLE_NAME + " where "
-						+ NotificationTable.URL + "=\"" + url + "\"";
-				Cursor c1 = DataBaseHelper.getInstance(context).getReadableDatabase()
-						.rawQuery(subSql, null);
-
-				int titleColumnIndex = c1.getColumnIndex(NotificationTable.TITLE);
-				int timeColumnIndex = c1.getColumnIndex(NotificationTable.TIME);
-
-				if (c1.moveToNext()) {
-					News news = new News();
-					news.setTitle(c1.getString(titleColumnIndex))
-							.setTime(c1.getString(timeColumnIndex)).setUrl(url);
-					rt.add(news);
-				}
-				break;
-			case News.RECENT_RECRUITMENT:
-				break;
-			case News.CENTER_RECRUITMENT:
-				break;
-			case News.WORKING_RECRUITMENT:
-				break;
-			}
-
+			News news = new News();
+			news.setTitle(c.getString(titleColumnIndex)).setTime(c.getString(timeColumnIndex))
+					.setUrl(c.getString(urlColumnIndex));
+			rt.add(news);
 		}
-		Log.v(TAG, rt.size() + " favourite items");
 		return rt;
 	}
 
@@ -184,10 +163,11 @@ public class DBTask {
 						SQLiteDatabase.CONFLICT_IGNORE);
 	}
 
-	public static void addStarrdNews(String url, int channel, Context context) {
+	public static void addStarrdNews(String url, String title, String time, Context context) {
 		ContentValues values = new ContentValues();
 		values.put(StarredTable.URL, url);
-		values.put(StarredTable.CATEGORY, channel);
+		values.put(StarredTable.TITLE, title);
+		values.put(StarredTable.TIME, time);
 		DataBaseHelper
 				.getInstance(context)
 				.getWritableDatabase()

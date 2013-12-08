@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/article_highest"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-   	<LinearLayout
-        android:id="@+id/article_header"
+    <TextView
+        android:id="@+id/loading_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:gravity="center_horizontal"
-        android:orientation="vertical" >
-    </LinearLayout>
-
-    <WebView
+        android:layout_marginTop="50sp"
+        android:gravity="center"
+        android:text="@string/loading"
+        android:textSize="20sp" />
+    <WebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</LinearLayout>
+</FrameLayout>

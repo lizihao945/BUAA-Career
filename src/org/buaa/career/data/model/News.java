@@ -12,6 +12,7 @@ public class News extends HashMap<String, Object> {
 	 */
 	private static final long serialVersionUID = 2571174627939774226L;
 	private int channel;
+	private int position;
 	private String title;
 	private String url;
 	private String time;
@@ -44,6 +45,12 @@ public class News extends HashMap<String, Object> {
 		put("channel", channel);
 		return this;
 	}
+	
+	public News setPosition(int position) {
+		this.position = position;
+		put("position", position);
+		return this;
+	}
 
 	public String getTitle() {
 		return title;
@@ -59,5 +66,9 @@ public class News extends HashMap<String, Object> {
 
 	public int getChannel() {
 		return channel;
+	}
+	
+	public int getPosition() {
+		return position;
 	}
 }

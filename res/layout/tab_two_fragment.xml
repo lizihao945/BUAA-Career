@@ -1,25 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.squareup.timessquare.CalendarPickerView
-        android:id="@+id/calendar_view"
+    <RelativeLayout
+        android:id="@+id/tab_one_tab_bar"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/white"
-        android:clipToPadding="false"
-        android:paddingBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp" />
+        android:layout_height="35dip"
+        android:background="@color/white" >
 
-    <ListView
-        android:id="@+id/list_view"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
+
+            <include
+                android:id="@+id/tab_one_tab_one"
+                layout="@layout/tab_one_tab" />
+
+            <include
+                android:id="@+id/tab_one_tab_two"
+                layout="@layout/tab_one_tab" />
+
+            <include
+                android:id="@+id/tab_one_tab_three"
+                layout="@layout/tab_one_tab" />
+
+        </LinearLayout>
+
+        <com.viewpagerindicator.UnderlinePageIndicator
+            android:id="@+id/tab_one_tab_indicator"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true" >
+        </com.viewpagerindicator.UnderlinePageIndicator>
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/tab_one_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/calendar_view" />
->
+        android:layout_height="match_parent" />
 
-</RelativeLayout>
+</LinearLayout>

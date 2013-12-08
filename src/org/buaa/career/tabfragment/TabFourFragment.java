@@ -19,8 +19,8 @@ public class TabFourFragment extends Fragment {
 		View view = inflater.inflate(R.layout.tab_four_fragment, container, false);
 		
 		List<String> data = new ArrayList<String>();
-		data.add("关于");
 		data.add("使用帮助");
+		data.add("使用反馈");
 		data.add("联系我们");
 		ListView listView1 = (ListView) view.findViewById(R.id.listview1);
 		listView1.setAdapter(new ArrayAdapter<String>(getActivity(),  android.R.layout.simple_list_item_1, data));

@@ -57,7 +57,7 @@ public class TabTwoFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.tab_one_fragment, container, false);
+		final View view = inflater.inflate(R.layout.tab_two_fragment, container, false);
 
 		// get reference of the category tabs in the tab bar
 		mTabs = new ArrayList<CheckableRelativeLayout>();

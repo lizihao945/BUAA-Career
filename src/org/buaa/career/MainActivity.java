@@ -109,6 +109,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 		args.putInt("channel", news.getChannel());
 		args.putInt("position", position);
 		args.putString("url", news.getUrl());
+		args.putString("title", news.getTitle());
+		args.putString("time", news.getTime());
 
 		Intent intent = new Intent();
 		intent.putExtras(args);
@@ -175,6 +177,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 						getResources().getColor(R.color.bc_gray));
 				break;
 			case 2:
+				((TabThreeFragment)mTabFragments.get(2)).refresh();
 				mTabImgs.get(0).setImageDrawable(
 						getResources().getDrawable(R.drawable.ic_three_men));
 				mTabTexts.get(0).setTextColor(

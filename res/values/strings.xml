@@ -15,4 +15,8 @@
 	<string name="refreshing">正在加载...</string>
 	<string name="refresh_failed">加载失败，请检查网络连接</string>
 	<string name="refresh_failed_footer">加载失败，点击重新加载...</string>
+	<string name="tobecontinued1">我们的应用还在开发过程中</string>
+	<string name="tobecontinued2">希望听到您的声音...</string>
+	<string name="loading">网页正在加载...</string>
+	<string name="loading_failed">加载失败，请检查网络连接...</string>
 </resources>

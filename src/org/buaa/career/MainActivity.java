@@ -11,6 +11,7 @@ import org.buaa.career.tabfragment.TabThreeFragment;
 import org.buaa.career.tabfragment.TabOneFragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -227,4 +229,22 @@ public class MainActivity extends SherlockFragmentActivity implements
 		return mTabFragments;
 	}
 
+	public void sendEmail() {
+		Intent data = new Intent(Intent.ACTION_SENDTO);
+		data.setData(Uri.parse("mailto:buaa_career@sina.com"));
+		data.putExtra(Intent.EXTRA_SUBJECT, "北航就业安卓客户端反馈");
+		data.putExtra(Intent.EXTRA_TEXT, "");
+		try {
+			startActivity(data);
+		} catch (Exception e) {
+			Toast.makeText(this, "没有找到邮件发送程序", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	public void  explorer() {
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		Uri content_url = Uri.parse("http://career.buaa.edu.cn");
+		intent.setData(content_url);
+		startActivity(intent);
+	}
 }
